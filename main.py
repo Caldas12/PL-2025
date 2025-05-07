@@ -1,7 +1,11 @@
-from lexer import lexer
+from parser import parser
 
-data = 'SELECT name, age FROM users;'
-lexer.input(data)
-
-for tok in lexer:
-    print(tok)
+while True:
+    try:
+        s = input('cql> ')
+    except EOFError:
+        break
+    if not s:
+        continue
+    result = parser.parse(s)
+    print(result)

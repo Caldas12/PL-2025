@@ -1,5 +1,7 @@
 import ply.lex as lex # type: ignore
 
+
+
 # List of token names.
 tokens = (
     'SELECT', 'FROM', 'IDENTIFIER',
