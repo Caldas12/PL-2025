@@ -85,4 +85,4 @@ def p_error(p):
 # Construção do parser
 # ---------------------
 
-parser = yacc.yacc()
+parser = yacc.yacc(debug=True)
