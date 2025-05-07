@@ -35,6 +35,18 @@ def p_statement(p):
                  | select_statement SEMICOLON'''
     p[0] = p[1]
 
+def p_operator(p):
+    '''operator : EQUALS
+                | NOT_EQUAL
+                | LESS_THAN
+                | GREATER_THAN
+                | LESS_EQUAL
+                | GREATER_EQUAL
+                | COMMA
+                | SEMICOLON
+                | STAR'''
+    p[0] = p[1]
+
 # --------- Comandos ---------
 
 def p_import_table(p):
