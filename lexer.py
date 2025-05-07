@@ -1,33 +1,75 @@
-import ply.lex as lex # type: ignore
+import ply.lex as lex
 
+# Lista de tokens
+tokens = [
+    'ID', 'STRING', 'NUMBER',
+    'EQUALS', 'STAR','NOT_EQUAL', 'LESS_THAN', 'GREATER_THEN', 'LESS_EQUAL', 'GREATHER_EQUAL',
+    'COMMA', 'SEMICOLON'
+]
 
+# Palavras-chave
+reserved = {
+    'import': 'IMPORT',
+    'table': 'TABLE',
+    'from': 'FROM',
+    'select': 'SELECT',
+    'where': 'WHERE',
+    'and': 'AND',
+    'create': 'CREATE',
+    'join': 'JOIN',
+    'using': 'USING',
+    'procedure': 'PROCEDURE',
+    'do': 'DO',
+    'end': 'END',
+    'call': 'CALL',
+    'export': 'EXPORT',
+    'as': 'AS',
+    'discard': 'DISCARD',
+    'rename': 'RENAME',
+    'print': 'PRINT',
+    'limit': 'LIMIT'
+}
 
-# List of token names.
-tokens = (
-    'SELECT', 'FROM', 'IDENTIFIER',
-    'COMMA', 'SEMICOLON',
-)
+tokens += list(reserved.values())
 
-# Regular expressions for simple tokens
-t_SELECT = r'SELECT'
-t_FROM = r'FROM'
+# Regras de expressão regular
+t_EQUALS = r'='
+t_NOT_EQUAL = r'<>'
+t_LESS_THAN = r'<'
+t_GREATER_THEN = r'>'
+t_LESS_EQUAL = r'<='
+t_GREATHER_EQUAL = r'>='
 t_COMMA = r','
 t_SEMICOLON = r';'
+t_STAR = r'\*'
 
-def t_IDENTIFIER(t):
-    r'[a-zA-Z_][a-zA-Z0-9_]*'
+def t_STRING(t):
+    r'\"([^\\\n]|(\\.))*?\"'
+    t.value = t.value.strip('"')
     return t
 
-# Ignore spaces and tabs
-t_ignore = ' \t'
+def t_NUMBER(t):
+    r'\d+(\.\d+)?'
+    t.value = float(t.value) if '.' in t.value else int(t.value)
+    return t
 
-def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
+def t_ID(t):
+    r'[a-zA-Z_][a-zA-Z_0-9]*'
+    t.type = reserved.get(t.value.lower(), 'ID')
+    return t
+
+def t_comment_line(t):
+    r'\-\-.*'
+    pass  # ignora
+
+def t_comment_block(t):
+    r'\{\-.*?\-\}'
+    pass
+
+t_ignore = ' \t\r\n'
 
 def t_error(t):
-    print(f"Illegal character '{t.value[0]}'")
+    print(f"Caractere ilegal '{t.value[0]}'")
     t.lexer.skip(1)
 
-# Build the lexer
 lexer = lex.lex()

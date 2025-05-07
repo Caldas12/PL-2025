@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'COMMA FROM IDENTIFIER SELECT SEMICOLONstatement : SELECT column_list FROM IDENTIFIER SEMICOLONcolumn_list : column_list COMMA IDENTIFIERcolumn_list : IDENTIFIER'
+_lr_signature = 'AND AS CALL COMMA CREATE DISCARD DO END EQUALS EXPORT FROM GE GT ID IMPORT JOIN LE LIMIT LT NE NUMBER PRINT PROCEDURE RENAME SELECT SEMICOLON STAR STRING TABLE USING WHEREprogram : statement_liststatement_list : statement_list statement\n| statementstatement : import_table SEMICOLON\n| export_table SEMICOLON\n| select_statement SEMICOLONimport_table : IMPORT TABLE ID FROM STRINGexport_table : EXPORT TABLE ID AS STRINGselect_statement : SELECT STAR FROM ID\n| SELECT column_list FROM IDcolumn_list : column_list COMMA ID\n| ID'
     
-_lr_action_items = {'SELECT':([0,],[2,]),'$end':([1,9,],[0,-1,]),'IDENTIFIER':([2,5,6,],[4,7,8,]),'FROM':([3,4,8,],[5,-3,-2,]),'COMMA':([3,4,8,],[6,-3,-2,]),'SEMICOLON':([7,],[9,]),}
+_lr_action_items = {'IMPORT':([0,2,3,10,11,12,13,],[7,7,-3,-2,-4,-5,-6,]),'EXPORT':([0,2,3,10,11,12,13,],[8,8,-3,-2,-4,-5,-6,]),'SELECT':([0,2,3,10,11,12,13,],[9,9,-3,-2,-4,-5,-6,]),'$end':([1,2,3,10,11,12,13,],[0,-1,-3,-2,-4,-5,-6,]),'SEMICOLON':([4,5,6,26,27,29,30,],[11,12,13,-9,-10,-7,-8,]),'TABLE':([7,8,],[14,15,]),'STAR':([9,],[16,]),'ID':([9,14,15,21,22,23,],[17,19,20,26,27,28,]),'FROM':([16,17,18,19,28,],[21,-12,22,24,-11,]),'COMMA':([17,18,28,],[-12,23,-11,]),'AS':([20,],[25,]),'STRING':([24,25,],[29,30,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,],[1,]),'column_list':([2,],[3,]),}
+_lr_goto_items = {'program':([0,],[1,]),'statement_list':([0,],[2,]),'statement':([0,2,],[3,10,]),'import_table':([0,2,],[4,4,]),'export_table':([0,2,],[5,5,]),'select_statement':([0,2,],[6,6,]),'column_list':([9,],[18,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,8 +26,17 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> statement","S'",1,None,None,None),
-  ('statement -> SELECT column_list FROM IDENTIFIER SEMICOLON','statement',5,'p_statement_select','parser.py',5),
-  ('column_list -> column_list COMMA IDENTIFIER','column_list',3,'p_column_list_multiple','parser.py',9),
-  ('column_list -> IDENTIFIER','column_list',1,'p_column_list_single','parser.py',13),
+  ("S' -> program","S'",1,None,None,None),
+  ('program -> statement_list','program',1,'p_program','parser.py',21),
+  ('statement_list -> statement_list statement','statement_list',2,'p_statement_list','parser.py',25),
+  ('statement_list -> statement','statement_list',1,'p_statement_list','parser.py',26),
+  ('statement -> import_table SEMICOLON','statement',2,'p_statement','parser.py',33),
+  ('statement -> export_table SEMICOLON','statement',2,'p_statement','parser.py',34),
+  ('statement -> select_statement SEMICOLON','statement',2,'p_statement','parser.py',35),
+  ('import_table -> IMPORT TABLE ID FROM STRING','import_table',5,'p_import_table','parser.py',41),
+  ('export_table -> EXPORT TABLE ID AS STRING','export_table',5,'p_export_table','parser.py',45),
+  ('select_statement -> SELECT STAR FROM ID','select_statement',4,'p_select_statement','parser.py',49),
+  ('select_statement -> SELECT column_list FROM ID','select_statement',4,'p_select_statement','parser.py',50),
+  ('column_list -> column_list COMMA ID','column_list',3,'p_column_list','parser.py',57),
+  ('column_list -> ID','column_list',1,'p_column_list','parser.py',58),
 ]

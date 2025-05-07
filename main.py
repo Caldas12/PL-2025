@@ -1,11 +1,12 @@
 from parser import parser
 
-while True:
-    try:
-        s = input('cql> ')
-    except EOFError:
-        break
-    if not s:
-        continue
-    result = parser.parse(s)
-    print(result)
+entrada = '''
+IMPORT TABLE estacoes FROM "estacoes.csv";
+EXPORT TABLE estacoes AS "saida.csv";
+SELECT * FROM estacoes;
+SELECT Id,Local FROM estacoes;
+'''
+
+resultado = parser.parse(entrada)
+for comando in resultado:
+    print(comando)
