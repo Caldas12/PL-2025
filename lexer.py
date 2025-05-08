@@ -1,11 +1,11 @@
 import ply.lex as lex
 
 # Lista de tokens
-tokens = [
+tokens = (
     'ID', 'STRING', 'NUMBER',
-    'EQUALS', 'STAR','NOT_EQUAL', 'LESS_THAN', 'GREATER_THEN', 'LESS_EQUAL', 'GREATHER_EQUAL',
+    'EQUALS', 'STAR','NOT_EQUAL', 'LESS_THAN', 'GREATER_THAN', 'LESS_EQUAL', 'GREATER_EQUAL',
     'COMMA', 'SEMICOLON'
-]
+)
 
 # Palavras-chave
 reserved = {
@@ -36,15 +36,15 @@ tokens += list(reserved.values())
 t_EQUALS = r'='
 t_NOT_EQUAL = r'<>'
 t_LESS_THAN = r'<'
-t_GREATER_THEN = r'>'
+t_GREATER_THAN = r'>'
 t_LESS_EQUAL = r'<='
-t_GREATHER_EQUAL = r'>='
+t_GREATER_EQUAL = r'>='
 t_COMMA = r','
 t_SEMICOLON = r';'
 t_STAR = r'\*'
 
 def t_STRING(t):
-    r'\"([^\\\n]|(\\.))*?\"'
+    r'\"[^"\n]*\"'
     t.value = t.value.strip('"')
     return t
 
@@ -69,7 +69,7 @@ def t_comment_block(t):
 t_ignore = ' \t\r\n'
 
 def t_error(t):
-    print(f"Caractere ilegal '{t.value[0]}'")
-    t.lexer.skip(1)
+    print(f"Token not recognized: {t.value[:10]}")
+    exit(1)
 
 lexer = lex.lex()
