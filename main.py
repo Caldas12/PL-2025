@@ -3,6 +3,7 @@ from parser import parser
 entrada = '''
 SELECT * FROM observacoes WHERE Temperatura > 22 AND Humidade < 80;
 SELECT Id FROM observacoes WHERE DirecaoVento = "NE";
+EXPORT TABLE estacoes AS "estacoes.csv";
 '''
 
 resultado = parser.parse(entrada)
