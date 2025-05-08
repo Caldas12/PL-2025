@@ -58,12 +58,12 @@ def p_export_table(p):
     p[0] = ('export', p[3], p[5])  # Podes usar uma classe depois, como fizemos com ImportTable
 
 def p_select_statement(p):
-    '''select_statement : SELECT STAR FROM ID
-                        | SELECT column_list FROM ID'''
+    '''select_statement : SELECT STAR FROM ID opt_where_clause
+                        | SELECT column_list FROM ID opt_where_clause'''
     if p[2] == '*':
-        p[0] = ('select_all', p[4])
+        p[0] = ('select_all', p[4], p[5])
     else:
-        p[0] = ('select_columns', p[2], p[4])
+        p[0] = ('select_columns', p[2], p[4], p[5])
 
 def p_column_list(p):
     '''column_list : column_list COMMA ID
@@ -72,6 +72,33 @@ def p_column_list(p):
         p[0] = p[1] + [p[3]]
     else:
         p[0] = [p[1]]
+
+def p_opt_where_clause(p):
+    '''opt_where_clause : WHERE condition
+                        | empty'''
+    if len(p) == 3:
+        p[0] = p[2]
+    else:
+        p[0] = None
+
+def p_condition(p):
+    '''condition : condition AND condition
+                 | ID operator value'''
+    if len(p) == 4 and p[2] == 'AND':
+        p[0] = ('and', p[1], p[3])
+    else:
+        p[0] = ('cond', p[1], p[2], p[3])
+
+def p_value(p):
+    '''value : NUMBER
+             | STRING'''
+    p[0] = p[1]
+
+def p_empty(p):
+    'empty :'
+    pass # Produz um valor nulo para o caso de não haver nada
+
+
 
 # --------- Erros ---------
 

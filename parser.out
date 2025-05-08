@@ -1,0 +1,582 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    CALL
+    CREATE
+    DISCARD
+    DO
+    END
+    JOIN
+    LIMIT
+    PRINT
+    PROCEDURE
+    RENAME
+    USING
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> statement_list
+Rule 2     statement_list -> statement_list statement
+Rule 3     statement_list -> statement
+Rule 4     statement -> import_table SEMICOLON
+Rule 5     statement -> export_table SEMICOLON
+Rule 6     statement -> select_statement SEMICOLON
+Rule 7     operator -> EQUALS
+Rule 8     operator -> NOT_EQUAL
+Rule 9     operator -> LESS_THAN
+Rule 10    operator -> GREATER_THAN
+Rule 11    operator -> LESS_EQUAL
+Rule 12    operator -> GREATER_EQUAL
+Rule 13    operator -> COMMA
+Rule 14    operator -> SEMICOLON
+Rule 15    operator -> STAR
+Rule 16    import_table -> IMPORT TABLE ID FROM STRING
+Rule 17    export_table -> EXPORT TABLE ID AS STRING
+Rule 18    select_statement -> SELECT STAR FROM ID opt_where_clause
+Rule 19    select_statement -> SELECT column_list FROM ID opt_where_clause
+Rule 20    column_list -> column_list COMMA ID
+Rule 21    column_list -> ID
+Rule 22    opt_where_clause -> WHERE condition
+Rule 23    opt_where_clause -> empty
+Rule 24    condition -> condition AND condition
+Rule 25    condition -> ID operator value
+Rule 26    value -> NUMBER
+Rule 27    value -> STRING
+Rule 28    empty -> <empty>
+
+Terminals, with rules where they appear
+
+AND                  : 24
+AS                   : 17
+CALL                 : 
+COMMA                : 13 20
+CREATE               : 
+DISCARD              : 
+DO                   : 
+END                  : 
+EQUALS               : 7
+EXPORT               : 17
+FROM                 : 16 18 19
+GREATER_EQUAL        : 12
+GREATER_THAN         : 10
+ID                   : 16 17 18 19 20 21 25
+IMPORT               : 16
+JOIN                 : 
+LESS_EQUAL           : 11
+LESS_THAN            : 9
+LIMIT                : 
+NOT_EQUAL            : 8
+NUMBER               : 26
+PRINT                : 
+PROCEDURE            : 
+RENAME               : 
+SELECT               : 18 19
+SEMICOLON            : 4 5 6 14
+STAR                 : 15 18
+STRING               : 16 17 27
+TABLE                : 16 17
+USING                : 
+WHERE                : 22
+error                : 
+
+Nonterminals, with rules where they appear
+
+column_list          : 19 20
+condition            : 22 24 24
+empty                : 23
+export_table         : 5
+import_table         : 4
+operator             : 25
+opt_where_clause     : 18 19
+program              : 0
+select_statement     : 6
+statement            : 2 3
+statement_list       : 1 2
+value                : 25
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . statement_list
+    (2) statement_list -> . statement_list statement
+    (3) statement_list -> . statement
+    (4) statement -> . import_table SEMICOLON
+    (5) statement -> . export_table SEMICOLON
+    (6) statement -> . select_statement SEMICOLON
+    (16) import_table -> . IMPORT TABLE ID FROM STRING
+    (17) export_table -> . EXPORT TABLE ID AS STRING
+    (18) select_statement -> . SELECT STAR FROM ID opt_where_clause
+    (19) select_statement -> . SELECT column_list FROM ID opt_where_clause
+
+    IMPORT          shift and go to state 7
+    EXPORT          shift and go to state 8
+    SELECT          shift and go to state 9
+
+    program                        shift and go to state 1
+    statement_list                 shift and go to state 2
+    statement                      shift and go to state 3
+    import_table                   shift and go to state 4
+    export_table                   shift and go to state 5
+    select_statement               shift and go to state 6
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> statement_list .
+    (2) statement_list -> statement_list . statement
+    (4) statement -> . import_table SEMICOLON
+    (5) statement -> . export_table SEMICOLON
+    (6) statement -> . select_statement SEMICOLON
+    (16) import_table -> . IMPORT TABLE ID FROM STRING
+    (17) export_table -> . EXPORT TABLE ID AS STRING
+    (18) select_statement -> . SELECT STAR FROM ID opt_where_clause
+    (19) select_statement -> . SELECT column_list FROM ID opt_where_clause
+
+    $end            reduce using rule 1 (program -> statement_list .)
+    IMPORT          shift and go to state 7
+    EXPORT          shift and go to state 8
+    SELECT          shift and go to state 9
+
+    statement                      shift and go to state 10
+    import_table                   shift and go to state 4
+    export_table                   shift and go to state 5
+    select_statement               shift and go to state 6
+
+state 3
+
+    (3) statement_list -> statement .
+
+    IMPORT          reduce using rule 3 (statement_list -> statement .)
+    EXPORT          reduce using rule 3 (statement_list -> statement .)
+    SELECT          reduce using rule 3 (statement_list -> statement .)
+    $end            reduce using rule 3 (statement_list -> statement .)
+
+
+state 4
+
+    (4) statement -> import_table . SEMICOLON
+
+    SEMICOLON       shift and go to state 11
+
+
+state 5
+
+    (5) statement -> export_table . SEMICOLON
+
+    SEMICOLON       shift and go to state 12
+
+
+state 6
+
+    (6) statement -> select_statement . SEMICOLON
+
+    SEMICOLON       shift and go to state 13
+
+
+state 7
+
+    (16) import_table -> IMPORT . TABLE ID FROM STRING
+
+    TABLE           shift and go to state 14
+
+
+state 8
+
+    (17) export_table -> EXPORT . TABLE ID AS STRING
+
+    TABLE           shift and go to state 15
+
+
+state 9
+
+    (18) select_statement -> SELECT . STAR FROM ID opt_where_clause
+    (19) select_statement -> SELECT . column_list FROM ID opt_where_clause
+    (20) column_list -> . column_list COMMA ID
+    (21) column_list -> . ID
+
+    STAR            shift and go to state 16
+    ID              shift and go to state 17
+
+    column_list                    shift and go to state 18
+
+state 10
+
+    (2) statement_list -> statement_list statement .
+
+    IMPORT          reduce using rule 2 (statement_list -> statement_list statement .)
+    EXPORT          reduce using rule 2 (statement_list -> statement_list statement .)
+    SELECT          reduce using rule 2 (statement_list -> statement_list statement .)
+    $end            reduce using rule 2 (statement_list -> statement_list statement .)
+
+
+state 11
+
+    (4) statement -> import_table SEMICOLON .
+
+    IMPORT          reduce using rule 4 (statement -> import_table SEMICOLON .)
+    EXPORT          reduce using rule 4 (statement -> import_table SEMICOLON .)
+    SELECT          reduce using rule 4 (statement -> import_table SEMICOLON .)
+    $end            reduce using rule 4 (statement -> import_table SEMICOLON .)
+
+
+state 12
+
+    (5) statement -> export_table SEMICOLON .
+
+    IMPORT          reduce using rule 5 (statement -> export_table SEMICOLON .)
+    EXPORT          reduce using rule 5 (statement -> export_table SEMICOLON .)
+    SELECT          reduce using rule 5 (statement -> export_table SEMICOLON .)
+    $end            reduce using rule 5 (statement -> export_table SEMICOLON .)
+
+
+state 13
+
+    (6) statement -> select_statement SEMICOLON .
+
+    IMPORT          reduce using rule 6 (statement -> select_statement SEMICOLON .)
+    EXPORT          reduce using rule 6 (statement -> select_statement SEMICOLON .)
+    SELECT          reduce using rule 6 (statement -> select_statement SEMICOLON .)
+    $end            reduce using rule 6 (statement -> select_statement SEMICOLON .)
+
+
+state 14
+
+    (16) import_table -> IMPORT TABLE . ID FROM STRING
+
+    ID              shift and go to state 19
+
+
+state 15
+
+    (17) export_table -> EXPORT TABLE . ID AS STRING
+
+    ID              shift and go to state 20
+
+
+state 16
+
+    (18) select_statement -> SELECT STAR . FROM ID opt_where_clause
+
+    FROM            shift and go to state 21
+
+
+state 17
+
+    (21) column_list -> ID .
+
+    FROM            reduce using rule 21 (column_list -> ID .)
+    COMMA           reduce using rule 21 (column_list -> ID .)
+
+
+state 18
+
+    (19) select_statement -> SELECT column_list . FROM ID opt_where_clause
+    (20) column_list -> column_list . COMMA ID
+
+    FROM            shift and go to state 22
+    COMMA           shift and go to state 23
+
+
+state 19
+
+    (16) import_table -> IMPORT TABLE ID . FROM STRING
+
+    FROM            shift and go to state 24
+
+
+state 20
+
+    (17) export_table -> EXPORT TABLE ID . AS STRING
+
+    AS              shift and go to state 25
+
+
+state 21
+
+    (18) select_statement -> SELECT STAR FROM . ID opt_where_clause
+
+    ID              shift and go to state 26
+
+
+state 22
+
+    (19) select_statement -> SELECT column_list FROM . ID opt_where_clause
+
+    ID              shift and go to state 27
+
+
+state 23
+
+    (20) column_list -> column_list COMMA . ID
+
+    ID              shift and go to state 28
+
+
+state 24
+
+    (16) import_table -> IMPORT TABLE ID FROM . STRING
+
+    STRING          shift and go to state 29
+
+
+state 25
+
+    (17) export_table -> EXPORT TABLE ID AS . STRING
+
+    STRING          shift and go to state 30
+
+
+state 26
+
+    (18) select_statement -> SELECT STAR FROM ID . opt_where_clause
+    (22) opt_where_clause -> . WHERE condition
+    (23) opt_where_clause -> . empty
+    (28) empty -> .
+
+    WHERE           shift and go to state 32
+    SEMICOLON       reduce using rule 28 (empty -> .)
+
+    opt_where_clause               shift and go to state 31
+    empty                          shift and go to state 33
+
+state 27
+
+    (19) select_statement -> SELECT column_list FROM ID . opt_where_clause
+    (22) opt_where_clause -> . WHERE condition
+    (23) opt_where_clause -> . empty
+    (28) empty -> .
+
+    WHERE           shift and go to state 32
+    SEMICOLON       reduce using rule 28 (empty -> .)
+
+    opt_where_clause               shift and go to state 34
+    empty                          shift and go to state 33
+
+state 28
+
+    (20) column_list -> column_list COMMA ID .
+
+    FROM            reduce using rule 20 (column_list -> column_list COMMA ID .)
+    COMMA           reduce using rule 20 (column_list -> column_list COMMA ID .)
+
+
+state 29
+
+    (16) import_table -> IMPORT TABLE ID FROM STRING .
+
+    SEMICOLON       reduce using rule 16 (import_table -> IMPORT TABLE ID FROM STRING .)
+
+
+state 30
+
+    (17) export_table -> EXPORT TABLE ID AS STRING .
+
+    SEMICOLON       reduce using rule 17 (export_table -> EXPORT TABLE ID AS STRING .)
+
+
+state 31
+
+    (18) select_statement -> SELECT STAR FROM ID opt_where_clause .
+
+    SEMICOLON       reduce using rule 18 (select_statement -> SELECT STAR FROM ID opt_where_clause .)
+
+
+state 32
+
+    (22) opt_where_clause -> WHERE . condition
+    (24) condition -> . condition AND condition
+    (25) condition -> . ID operator value
+
+    ID              shift and go to state 36
+
+    condition                      shift and go to state 35
+
+state 33
+
+    (23) opt_where_clause -> empty .
+
+    SEMICOLON       reduce using rule 23 (opt_where_clause -> empty .)
+
+
+state 34
+
+    (19) select_statement -> SELECT column_list FROM ID opt_where_clause .
+
+    SEMICOLON       reduce using rule 19 (select_statement -> SELECT column_list FROM ID opt_where_clause .)
+
+
+state 35
+
+    (22) opt_where_clause -> WHERE condition .
+    (24) condition -> condition . AND condition
+
+    SEMICOLON       reduce using rule 22 (opt_where_clause -> WHERE condition .)
+    AND             shift and go to state 37
+
+
+state 36
+
+    (25) condition -> ID . operator value
+    (7) operator -> . EQUALS
+    (8) operator -> . NOT_EQUAL
+    (9) operator -> . LESS_THAN
+    (10) operator -> . GREATER_THAN
+    (11) operator -> . LESS_EQUAL
+    (12) operator -> . GREATER_EQUAL
+    (13) operator -> . COMMA
+    (14) operator -> . SEMICOLON
+    (15) operator -> . STAR
+
+    EQUALS          shift and go to state 39
+    NOT_EQUAL       shift and go to state 40
+    LESS_THAN       shift and go to state 41
+    GREATER_THAN    shift and go to state 42
+    LESS_EQUAL      shift and go to state 43
+    GREATER_EQUAL   shift and go to state 44
+    COMMA           shift and go to state 45
+    SEMICOLON       shift and go to state 46
+    STAR            shift and go to state 47
+
+    operator                       shift and go to state 38
+
+state 37
+
+    (24) condition -> condition AND . condition
+    (24) condition -> . condition AND condition
+    (25) condition -> . ID operator value
+
+    ID              shift and go to state 36
+
+    condition                      shift and go to state 48
+
+state 38
+
+    (25) condition -> ID operator . value
+    (26) value -> . NUMBER
+    (27) value -> . STRING
+
+    NUMBER          shift and go to state 50
+    STRING          shift and go to state 51
+
+    value                          shift and go to state 49
+
+state 39
+
+    (7) operator -> EQUALS .
+
+    NUMBER          reduce using rule 7 (operator -> EQUALS .)
+    STRING          reduce using rule 7 (operator -> EQUALS .)
+
+
+state 40
+
+    (8) operator -> NOT_EQUAL .
+
+    NUMBER          reduce using rule 8 (operator -> NOT_EQUAL .)
+    STRING          reduce using rule 8 (operator -> NOT_EQUAL .)
+
+
+state 41
+
+    (9) operator -> LESS_THAN .
+
+    NUMBER          reduce using rule 9 (operator -> LESS_THAN .)
+    STRING          reduce using rule 9 (operator -> LESS_THAN .)
+
+
+state 42
+
+    (10) operator -> GREATER_THAN .
+
+    NUMBER          reduce using rule 10 (operator -> GREATER_THAN .)
+    STRING          reduce using rule 10 (operator -> GREATER_THAN .)
+
+
+state 43
+
+    (11) operator -> LESS_EQUAL .
+
+    NUMBER          reduce using rule 11 (operator -> LESS_EQUAL .)
+    STRING          reduce using rule 11 (operator -> LESS_EQUAL .)
+
+
+state 44
+
+    (12) operator -> GREATER_EQUAL .
+
+    NUMBER          reduce using rule 12 (operator -> GREATER_EQUAL .)
+    STRING          reduce using rule 12 (operator -> GREATER_EQUAL .)
+
+
+state 45
+
+    (13) operator -> COMMA .
+
+    NUMBER          reduce using rule 13 (operator -> COMMA .)
+    STRING          reduce using rule 13 (operator -> COMMA .)
+
+
+state 46
+
+    (14) operator -> SEMICOLON .
+
+    NUMBER          reduce using rule 14 (operator -> SEMICOLON .)
+    STRING          reduce using rule 14 (operator -> SEMICOLON .)
+
+
+state 47
+
+    (15) operator -> STAR .
+
+    NUMBER          reduce using rule 15 (operator -> STAR .)
+    STRING          reduce using rule 15 (operator -> STAR .)
+
+
+state 48
+
+    (24) condition -> condition AND condition .
+    (24) condition -> condition . AND condition
+
+  ! shift/reduce conflict for AND resolved as shift
+    SEMICOLON       reduce using rule 24 (condition -> condition AND condition .)
+    AND             shift and go to state 37
+
+  ! AND             [ reduce using rule 24 (condition -> condition AND condition .) ]
+
+
+state 49
+
+    (25) condition -> ID operator value .
+
+    AND             reduce using rule 25 (condition -> ID operator value .)
+    SEMICOLON       reduce using rule 25 (condition -> ID operator value .)
+
+
+state 50
+
+    (26) value -> NUMBER .
+
+    AND             reduce using rule 26 (value -> NUMBER .)
+    SEMICOLON       reduce using rule 26 (value -> NUMBER .)
+
+
+state 51
+
+    (27) value -> STRING .
+
+    AND             reduce using rule 27 (value -> STRING .)
+    SEMICOLON       reduce using rule 27 (value -> STRING .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for AND in state 48 resolved as shift

@@ -1,12 +1,11 @@
-from parser import parser
+from parser import parser  
 
 entrada = '''
-IMPORT TABLE estacoes FROM "estacoes.csv";
-EXPORT TABLE estacoes AS "saida.csv";
-SELECT * FROM estacoes;
-SELECT Id,Local FROM estacoes;
+SELECT * FROM observacoes WHERE Temperatura > 22 AND Humidade < 80;
+SELECT Id FROM observacoes WHERE DirecaoVento = "NE";
 '''
 
 resultado = parser.parse(entrada)
+
 for comando in resultado:
     print(comando)

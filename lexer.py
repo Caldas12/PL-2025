@@ -1,11 +1,20 @@
 import ply.lex as lex
 
 # Lista de tokens
-tokens = (
-    'ID', 'STRING', 'NUMBER',
-    'EQUALS', 'STAR','NOT_EQUAL', 'LESS_THAN', 'GREATER_THAN', 'LESS_EQUAL', 'GREATER_EQUAL',
-    'COMMA', 'SEMICOLON'
-)
+tokens = [
+    'ID', 
+    'STRING', 
+    'NUMBER',
+    'EQUALS', 
+    'STAR',
+    'NOT_EQUAL', 
+    'LESS_THAN', 
+    'GREATER_THAN', 
+    'LESS_EQUAL', 
+    'GREATER_EQUAL',
+    'COMMA', 
+    'SEMICOLON'
+]
 
 # Palavras-chave
 reserved = {
