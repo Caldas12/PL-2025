@@ -6,7 +6,7 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'AND AS CALL COMMA CREATE DISCARD DO END EQUALS EXPORT FROM GREATER_EQUAL GREATER_THAN ID IMPORT JOIN LESS_EQUAL LESS_THAN LIMIT NOT_EQUAL NUMBER PRINT PROCEDURE RENAME SELECT SEMICOLON STAR STRING TABLE USING WHEREprogram : statement_liststatement_list : statement_list statement\n| statementstatement : import_table SEMICOLON\n| export_table SEMICOLON\n| select_statement SEMICOLONoperator : EQUALS\n| NOT_EQUAL\n| LESS_THAN\n| GREATER_THAN\n| LESS_EQUAL\n| GREATER_EQUAL\n| COMMA\n| SEMICOLON\n| STARimport_table : IMPORT TABLE ID FROM STRINGexport_table : EXPORT TABLE ID AS STRINGselect_statement : SELECT STAR FROM ID opt_where_clause\n| SELECT column_list FROM ID opt_where_clausecolumn_list : column_list COMMA ID\n| IDopt_where_clause : WHERE condition\n| emptycondition : condition AND condition\n| ID operator valuevalue : NUMBER\n| STRINGempty :'
+_lr_signature = 'AND AS CALL COMMA CREATE DISCARD DO END EQUALS EXPORT FROM GREATER_EQUAL GREATER_THAN ID IMPORT JOIN LESS_EQUAL LESS_THAN LIMIT NOT_EQUAL NUMBER PRINT PROCEDURE RENAME SELECT SEMICOLON STAR STRING TABLE USING WHEREprogram : statement_liststatement_list : statement_list statement\n| statementstatement : import_table SEMICOLON\n| export_table SEMICOLON\n| select_statement SEMICOLONoperator : EQUALS\n| NOT_EQUAL\n| LESS_THAN\n| GREATER_THAN\n| LESS_EQUAL\n| GREATER_EQUAL\n| COMMA\n| SEMICOLON\n| STARimport_table : IMPORT TABLE ID FROM STRINGexport_table : EXPORT TABLE ID AS STRINGselect_statement : SELECT STAR FROM ID where_clause\n| SELECT column_list FROM ID where_clausecolumn_list : column_list COMMA ID\n| IDwhere_clause : WHERE condition\n| emptycondition : condition AND condition\n| ID operator valuevalue : NUMBER\n| STRINGempty :'
     
 _lr_action_items = {'IMPORT':([0,2,3,10,11,12,13,],[7,7,-3,-2,-4,-5,-6,]),'EXPORT':([0,2,3,10,11,12,13,],[8,8,-3,-2,-4,-5,-6,]),'SELECT':([0,2,3,10,11,12,13,],[9,9,-3,-2,-4,-5,-6,]),'$end':([1,2,3,10,11,12,13,],[0,-1,-3,-2,-4,-5,-6,]),'SEMICOLON':([4,5,6,26,27,29,30,31,33,34,35,36,48,49,50,51,],[11,12,13,-28,-28,-16,-17,-18,-23,-19,-22,46,-24,-25,-26,-27,]),'TABLE':([7,8,],[14,15,]),'STAR':([9,36,],[16,47,]),'ID':([9,14,15,21,22,23,32,37,],[17,19,20,26,27,28,36,36,]),'FROM':([16,17,18,19,28,],[21,-21,22,24,-20,]),'COMMA':([17,18,28,36,],[-21,23,-20,45,]),'AS':([20,],[25,]),'STRING':([24,25,38,39,40,41,42,43,44,45,46,47,],[29,30,51,-7,-8,-9,-10,-11,-12,-13,-14,-15,]),'WHERE':([26,27,],[32,32,]),'AND':([35,48,49,50,51,],[37,37,-25,-26,-27,]),'EQUALS':([36,],[39,]),'NOT_EQUAL':([36,],[40,]),'LESS_THAN':([36,],[41,]),'GREATER_THAN':([36,],[42,]),'LESS_EQUAL':([36,],[43,]),'GREATER_EQUAL':([36,],[44,]),'NUMBER':([38,39,40,41,42,43,44,45,46,47,],[50,-7,-8,-9,-10,-11,-12,-13,-14,-15,]),}
 
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'statement_list':([0,],[2,]),'statement':([0,2,],[3,10,]),'import_table':([0,2,],[4,4,]),'export_table':([0,2,],[5,5,]),'select_statement':([0,2,],[6,6,]),'column_list':([9,],[18,]),'opt_where_clause':([26,27,],[31,34,]),'empty':([26,27,],[33,33,]),'condition':([32,37,],[35,48,]),'operator':([36,],[38,]),'value':([38,],[49,]),}
+_lr_goto_items = {'program':([0,],[1,]),'statement_list':([0,],[2,]),'statement':([0,2,],[3,10,]),'import_table':([0,2,],[4,4,]),'export_table':([0,2,],[5,5,]),'select_statement':([0,2,],[6,6,]),'column_list':([9,],[18,]),'where_clause':([26,27,],[31,34,]),'empty':([26,27,],[33,33,]),'condition':([32,37,],[35,48,]),'operator':([36,],[38,]),'value':([38,],[49,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -44,12 +44,12 @@ _lr_productions = [
   ('operator -> STAR','operator',1,'p_operator','parser.py',47),
   ('import_table -> IMPORT TABLE ID FROM STRING','import_table',5,'p_import_table','parser.py',53),
   ('export_table -> EXPORT TABLE ID AS STRING','export_table',5,'p_export_table','parser.py',57),
-  ('select_statement -> SELECT STAR FROM ID opt_where_clause','select_statement',5,'p_select_statement','parser.py',61),
-  ('select_statement -> SELECT column_list FROM ID opt_where_clause','select_statement',5,'p_select_statement','parser.py',62),
+  ('select_statement -> SELECT STAR FROM ID where_clause','select_statement',5,'p_select_statement','parser.py',61),
+  ('select_statement -> SELECT column_list FROM ID where_clause','select_statement',5,'p_select_statement','parser.py',62),
   ('column_list -> column_list COMMA ID','column_list',3,'p_column_list','parser.py',69),
   ('column_list -> ID','column_list',1,'p_column_list','parser.py',70),
-  ('opt_where_clause -> WHERE condition','opt_where_clause',2,'p_opt_where_clause','parser.py',77),
-  ('opt_where_clause -> empty','opt_where_clause',1,'p_opt_where_clause','parser.py',78),
+  ('where_clause -> WHERE condition','where_clause',2,'p_where_clause','parser.py',77),
+  ('where_clause -> empty','where_clause',1,'p_where_clause','parser.py',78),
   ('condition -> condition AND condition','condition',3,'p_condition','parser.py',85),
   ('condition -> ID operator value','condition',3,'p_condition','parser.py',86),
   ('value -> NUMBER','value',1,'p_value','parser.py',93),

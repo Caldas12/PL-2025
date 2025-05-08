@@ -34,12 +34,12 @@ Rule 14    operator -> SEMICOLON
 Rule 15    operator -> STAR
 Rule 16    import_table -> IMPORT TABLE ID FROM STRING
 Rule 17    export_table -> EXPORT TABLE ID AS STRING
-Rule 18    select_statement -> SELECT STAR FROM ID opt_where_clause
-Rule 19    select_statement -> SELECT column_list FROM ID opt_where_clause
+Rule 18    select_statement -> SELECT STAR FROM ID where_clause
+Rule 19    select_statement -> SELECT column_list FROM ID where_clause
 Rule 20    column_list -> column_list COMMA ID
 Rule 21    column_list -> ID
-Rule 22    opt_where_clause -> WHERE condition
-Rule 23    opt_where_clause -> empty
+Rule 22    where_clause -> WHERE condition
+Rule 23    where_clause -> empty
 Rule 24    condition -> condition AND condition
 Rule 25    condition -> ID operator value
 Rule 26    value -> NUMBER
@@ -89,12 +89,12 @@ empty                : 23
 export_table         : 5
 import_table         : 4
 operator             : 25
-opt_where_clause     : 18 19
 program              : 0
 select_statement     : 6
 statement            : 2 3
 statement_list       : 1 2
 value                : 25
+where_clause         : 18 19
 
 Parsing method: LALR
 
@@ -109,8 +109,8 @@ state 0
     (6) statement -> . select_statement SEMICOLON
     (16) import_table -> . IMPORT TABLE ID FROM STRING
     (17) export_table -> . EXPORT TABLE ID AS STRING
-    (18) select_statement -> . SELECT STAR FROM ID opt_where_clause
-    (19) select_statement -> . SELECT column_list FROM ID opt_where_clause
+    (18) select_statement -> . SELECT STAR FROM ID where_clause
+    (19) select_statement -> . SELECT column_list FROM ID where_clause
 
     IMPORT          shift and go to state 7
     EXPORT          shift and go to state 8
@@ -138,8 +138,8 @@ state 2
     (6) statement -> . select_statement SEMICOLON
     (16) import_table -> . IMPORT TABLE ID FROM STRING
     (17) export_table -> . EXPORT TABLE ID AS STRING
-    (18) select_statement -> . SELECT STAR FROM ID opt_where_clause
-    (19) select_statement -> . SELECT column_list FROM ID opt_where_clause
+    (18) select_statement -> . SELECT STAR FROM ID where_clause
+    (19) select_statement -> . SELECT column_list FROM ID where_clause
 
     $end            reduce using rule 1 (program -> statement_list .)
     IMPORT          shift and go to state 7
@@ -198,8 +198,8 @@ state 8
 
 state 9
 
-    (18) select_statement -> SELECT . STAR FROM ID opt_where_clause
-    (19) select_statement -> SELECT . column_list FROM ID opt_where_clause
+    (18) select_statement -> SELECT . STAR FROM ID where_clause
+    (19) select_statement -> SELECT . column_list FROM ID where_clause
     (20) column_list -> . column_list COMMA ID
     (21) column_list -> . ID
 
@@ -264,7 +264,7 @@ state 15
 
 state 16
 
-    (18) select_statement -> SELECT STAR . FROM ID opt_where_clause
+    (18) select_statement -> SELECT STAR . FROM ID where_clause
 
     FROM            shift and go to state 21
 
@@ -279,7 +279,7 @@ state 17
 
 state 18
 
-    (19) select_statement -> SELECT column_list . FROM ID opt_where_clause
+    (19) select_statement -> SELECT column_list . FROM ID where_clause
     (20) column_list -> column_list . COMMA ID
 
     FROM            shift and go to state 22
@@ -302,14 +302,14 @@ state 20
 
 state 21
 
-    (18) select_statement -> SELECT STAR FROM . ID opt_where_clause
+    (18) select_statement -> SELECT STAR FROM . ID where_clause
 
     ID              shift and go to state 26
 
 
 state 22
 
-    (19) select_statement -> SELECT column_list FROM . ID opt_where_clause
+    (19) select_statement -> SELECT column_list FROM . ID where_clause
 
     ID              shift and go to state 27
 
@@ -337,28 +337,28 @@ state 25
 
 state 26
 
-    (18) select_statement -> SELECT STAR FROM ID . opt_where_clause
-    (22) opt_where_clause -> . WHERE condition
-    (23) opt_where_clause -> . empty
+    (18) select_statement -> SELECT STAR FROM ID . where_clause
+    (22) where_clause -> . WHERE condition
+    (23) where_clause -> . empty
     (28) empty -> .
 
     WHERE           shift and go to state 32
     SEMICOLON       reduce using rule 28 (empty -> .)
 
-    opt_where_clause               shift and go to state 31
+    where_clause                   shift and go to state 31
     empty                          shift and go to state 33
 
 state 27
 
-    (19) select_statement -> SELECT column_list FROM ID . opt_where_clause
-    (22) opt_where_clause -> . WHERE condition
-    (23) opt_where_clause -> . empty
+    (19) select_statement -> SELECT column_list FROM ID . where_clause
+    (22) where_clause -> . WHERE condition
+    (23) where_clause -> . empty
     (28) empty -> .
 
     WHERE           shift and go to state 32
     SEMICOLON       reduce using rule 28 (empty -> .)
 
-    opt_where_clause               shift and go to state 34
+    where_clause                   shift and go to state 34
     empty                          shift and go to state 33
 
 state 28
@@ -385,14 +385,14 @@ state 30
 
 state 31
 
-    (18) select_statement -> SELECT STAR FROM ID opt_where_clause .
+    (18) select_statement -> SELECT STAR FROM ID where_clause .
 
-    SEMICOLON       reduce using rule 18 (select_statement -> SELECT STAR FROM ID opt_where_clause .)
+    SEMICOLON       reduce using rule 18 (select_statement -> SELECT STAR FROM ID where_clause .)
 
 
 state 32
 
-    (22) opt_where_clause -> WHERE . condition
+    (22) where_clause -> WHERE . condition
     (24) condition -> . condition AND condition
     (25) condition -> . ID operator value
 
@@ -402,24 +402,24 @@ state 32
 
 state 33
 
-    (23) opt_where_clause -> empty .
+    (23) where_clause -> empty .
 
-    SEMICOLON       reduce using rule 23 (opt_where_clause -> empty .)
+    SEMICOLON       reduce using rule 23 (where_clause -> empty .)
 
 
 state 34
 
-    (19) select_statement -> SELECT column_list FROM ID opt_where_clause .
+    (19) select_statement -> SELECT column_list FROM ID where_clause .
 
-    SEMICOLON       reduce using rule 19 (select_statement -> SELECT column_list FROM ID opt_where_clause .)
+    SEMICOLON       reduce using rule 19 (select_statement -> SELECT column_list FROM ID where_clause .)
 
 
 state 35
 
-    (22) opt_where_clause -> WHERE condition .
+    (22) where_clause -> WHERE condition .
     (24) condition -> condition . AND condition
 
-    SEMICOLON       reduce using rule 22 (opt_where_clause -> WHERE condition .)
+    SEMICOLON       reduce using rule 22 (where_clause -> WHERE condition .)
     AND             shift and go to state 37
 
 

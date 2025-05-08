@@ -55,11 +55,11 @@ def p_import_table(p):
 
 def p_export_table(p):
     '''export_table : EXPORT TABLE ID AS STRING'''
-    p[0] = ('export', p[3], p[5])  # Podes usar uma classe depois, como fizemos com ImportTable
+    p[0] = ('export', p[3], p[5])  
 
 def p_select_statement(p):
-    '''select_statement : SELECT STAR FROM ID opt_where_clause
-                        | SELECT column_list FROM ID opt_where_clause'''
+    '''select_statement : SELECT STAR FROM ID where_clause
+                        | SELECT column_list FROM ID where_clause'''
     if p[2] == '*':
         p[0] = ('select_all', p[4], p[5])
     else:
@@ -73,8 +73,8 @@ def p_column_list(p):
     else:
         p[0] = [p[1]]
 
-def p_opt_where_clause(p):
-    '''opt_where_clause : WHERE condition
+def p_where_clause(p):
+    '''where_clause : WHERE condition
                         | empty'''
     if len(p) == 3:
         p[0] = p[2]
