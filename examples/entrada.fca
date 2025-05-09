@@ -1,2 +1,2 @@
 IMPORT TABLE importada FROM "examples/estacoes.csv";
-EXPORT TABLE importada TO "teste.csv";
+EXPORT TABLE importada AS "teste.csv";

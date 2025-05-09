@@ -3,18 +3,14 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     AND
-    AS
     CALL
     CREATE
-    DISCARD
     DO
     END
     JOIN
     LIMIT
     NUMBER
-    PRINT
     PROCEDURE
-    RENAME
     SELECT
     USING
     WHERE
@@ -37,16 +33,19 @@ Rule 12    operator -> COMMA
 Rule 13    operator -> SEMICOLON
 Rule 14    operator -> STAR
 Rule 15    import_table -> IMPORT TABLE ID FROM STRING SEMICOLON
-Rule 16    export_table -> EXPORT TABLE ID TO STRING SEMICOLON
+Rule 16    export_table -> EXPORT TABLE ID AS STRING SEMICOLON
+Rule 17    discard_table -> DISCARD TABLE ID SEMICOLON
+Rule 18    rename_table -> RENAME TABLE ID ID SEMICOLON
+Rule 19    print_table -> PRINT TABLE ID SEMICOLON
 
 Terminals, with rules where they appear
 
 AND                  : 
-AS                   : 
+AS                   : 16
 CALL                 : 
 COMMA                : 12
 CREATE               : 
-DISCARD              : 
+DISCARD              : 17
 DO                   : 
 END                  : 
 EQUALS               : 6
@@ -54,7 +53,7 @@ EXPORT               : 16
 FROM                 : 15
 GREATER_EQUAL        : 11
 GREATER_THAN         : 9
-ID                   : 15 16
+ID                   : 15 16 17 18 18 19
 IMPORT               : 15
 JOIN                 : 
 LESS_EQUAL           : 10
@@ -62,25 +61,27 @@ LESS_THAN            : 8
 LIMIT                : 
 NOT_EQUAL            : 7
 NUMBER               : 
-PRINT                : 
+PRINT                : 19
 PROCEDURE            : 
-RENAME               : 
+RENAME               : 18
 SELECT               : 
-SEMICOLON            : 13 15 16
+SEMICOLON            : 13 15 16 17 18 19
 STAR                 : 14
 STRING               : 15 16
-TABLE                : 15 16
-TO                   : 16
+TABLE                : 15 16 17 18 19
 USING                : 
 WHERE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
+discard_table        : 
 export_table         : 5
 import_table         : 4
 operator             : 
+print_table          : 
 program              : 0
+rename_table         : 
 statement            : 2 3
 statement_list       : 1 2
 
@@ -95,7 +96,7 @@ state 0
     (4) statement -> . import_table
     (5) statement -> . export_table
     (15) import_table -> . IMPORT TABLE ID FROM STRING SEMICOLON
-    (16) export_table -> . EXPORT TABLE ID TO STRING SEMICOLON
+    (16) export_table -> . EXPORT TABLE ID AS STRING SEMICOLON
 
     IMPORT          shift and go to state 6
     EXPORT          shift and go to state 7
@@ -119,7 +120,7 @@ state 2
     (4) statement -> . import_table
     (5) statement -> . export_table
     (15) import_table -> . IMPORT TABLE ID FROM STRING SEMICOLON
-    (16) export_table -> . EXPORT TABLE ID TO STRING SEMICOLON
+    (16) export_table -> . EXPORT TABLE ID AS STRING SEMICOLON
 
     $end            reduce using rule 1 (program -> statement_list .)
     IMPORT          shift and go to state 6
@@ -165,7 +166,7 @@ state 6
 
 state 7
 
-    (16) export_table -> EXPORT . TABLE ID TO STRING SEMICOLON
+    (16) export_table -> EXPORT . TABLE ID AS STRING SEMICOLON
 
     TABLE           shift and go to state 10
 
@@ -188,7 +189,7 @@ state 9
 
 state 10
 
-    (16) export_table -> EXPORT TABLE . ID TO STRING SEMICOLON
+    (16) export_table -> EXPORT TABLE . ID AS STRING SEMICOLON
 
     ID              shift and go to state 12
 
@@ -202,9 +203,9 @@ state 11
 
 state 12
 
-    (16) export_table -> EXPORT TABLE ID . TO STRING SEMICOLON
+    (16) export_table -> EXPORT TABLE ID . AS STRING SEMICOLON
 
-    TO              shift and go to state 14
+    AS              shift and go to state 14
 
 
 state 13
@@ -216,7 +217,7 @@ state 13
 
 state 14
 
-    (16) export_table -> EXPORT TABLE ID TO . STRING SEMICOLON
+    (16) export_table -> EXPORT TABLE ID AS . STRING SEMICOLON
 
     STRING          shift and go to state 16
 
@@ -230,7 +231,7 @@ state 15
 
 state 16
 
-    (16) export_table -> EXPORT TABLE ID TO STRING . SEMICOLON
+    (16) export_table -> EXPORT TABLE ID AS STRING . SEMICOLON
 
     SEMICOLON       shift and go to state 18
 
@@ -246,9 +247,9 @@ state 17
 
 state 18
 
-    (16) export_table -> EXPORT TABLE ID TO STRING SEMICOLON .
+    (16) export_table -> EXPORT TABLE ID AS STRING SEMICOLON .
 
-    IMPORT          reduce using rule 16 (export_table -> EXPORT TABLE ID TO STRING SEMICOLON .)
-    EXPORT          reduce using rule 16 (export_table -> EXPORT TABLE ID TO STRING SEMICOLON .)
-    $end            reduce using rule 16 (export_table -> EXPORT TABLE ID TO STRING SEMICOLON .)
+    IMPORT          reduce using rule 16 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
+    EXPORT          reduce using rule 16 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
+    $end            reduce using rule 16 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
 

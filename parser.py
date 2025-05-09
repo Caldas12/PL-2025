@@ -41,15 +41,31 @@ class Parser:
                     | STAR'''
         p[0] = p[1]
 
-    # --------- Comandos ---------
+    # --------- Comandos - Tabela de dados ---------
 
     def p_import_table(self, p):
         '''import_table : IMPORT TABLE ID FROM STRING SEMICOLON'''
         p[0] = ('import', p[3], p[5])
     
     def p_export_table(self, p):
-        '''export_table : EXPORT TABLE ID TO STRING SEMICOLON'''
+        '''export_table : EXPORT TABLE ID AS STRING SEMICOLON'''
         p[0] = ('export', p[3], p[5])
+
+    def p_discard_table(self, p):
+        '''discard_table : DISCARD TABLE ID SEMICOLON'''
+        p[0] = ('discard', p[3])
+    
+    def p_rename_table(self, p):
+        '''rename_table : RENAME TABLE ID ID SEMICOLON'''
+        p[0] = ('rename', p[3], p[5])
+
+    def p_print_table(self, p):
+        '''print_table : PRINT TABLE ID SEMICOLON'''
+        p[0] = ('print', p[3])
+    
+    # --------- Comandos - Queries ---------
+
+    
 
     # --------- Erros ---------
 
