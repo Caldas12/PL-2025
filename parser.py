@@ -25,7 +25,8 @@ class Parser:
             p[0] = [p[1]]
 
     def p_statement(self, p):
-        '''statement : import_table'''
+        '''statement : import_table
+                    | export_table'''
         p[0] = p[1]
 
     def p_operator(self, p):
@@ -45,6 +46,10 @@ class Parser:
     def p_import_table(self, p):
         '''import_table : IMPORT TABLE ID FROM STRING SEMICOLON'''
         p[0] = ('import', p[3], p[5])
+    
+    def p_export_table(self, p):
+        '''export_table : EXPORT TABLE ID TO STRING SEMICOLON'''
+        p[0] = ('export', p[3], p[5])
 
     # --------- Erros ---------
 

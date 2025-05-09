@@ -9,7 +9,6 @@ Unused terminals:
     DISCARD
     DO
     END
-    EXPORT
     JOIN
     LIMIT
     NUMBER
@@ -27,54 +26,58 @@ Rule 1     program -> statement_list
 Rule 2     statement_list -> statement_list statement
 Rule 3     statement_list -> statement
 Rule 4     statement -> import_table
-Rule 5     operator -> EQUALS
-Rule 6     operator -> NOT_EQUAL
-Rule 7     operator -> LESS_THAN
-Rule 8     operator -> GREATER_THAN
-Rule 9     operator -> LESS_EQUAL
-Rule 10    operator -> GREATER_EQUAL
-Rule 11    operator -> COMMA
-Rule 12    operator -> SEMICOLON
-Rule 13    operator -> STAR
-Rule 14    import_table -> IMPORT TABLE ID FROM STRING SEMICOLON
+Rule 5     statement -> export_table
+Rule 6     operator -> EQUALS
+Rule 7     operator -> NOT_EQUAL
+Rule 8     operator -> LESS_THAN
+Rule 9     operator -> GREATER_THAN
+Rule 10    operator -> LESS_EQUAL
+Rule 11    operator -> GREATER_EQUAL
+Rule 12    operator -> COMMA
+Rule 13    operator -> SEMICOLON
+Rule 14    operator -> STAR
+Rule 15    import_table -> IMPORT TABLE ID FROM STRING SEMICOLON
+Rule 16    export_table -> EXPORT TABLE ID TO STRING SEMICOLON
 
 Terminals, with rules where they appear
 
 AND                  : 
 AS                   : 
 CALL                 : 
-COMMA                : 11
+COMMA                : 12
 CREATE               : 
 DISCARD              : 
 DO                   : 
 END                  : 
-EQUALS               : 5
-EXPORT               : 
-FROM                 : 14
-GREATER_EQUAL        : 10
-GREATER_THAN         : 8
-ID                   : 14
-IMPORT               : 14
+EQUALS               : 6
+EXPORT               : 16
+FROM                 : 15
+GREATER_EQUAL        : 11
+GREATER_THAN         : 9
+ID                   : 15 16
+IMPORT               : 15
 JOIN                 : 
-LESS_EQUAL           : 9
-LESS_THAN            : 7
+LESS_EQUAL           : 10
+LESS_THAN            : 8
 LIMIT                : 
-NOT_EQUAL            : 6
+NOT_EQUAL            : 7
 NUMBER               : 
 PRINT                : 
 PROCEDURE            : 
 RENAME               : 
 SELECT               : 
-SEMICOLON            : 12 14
-STAR                 : 13
-STRING               : 14
-TABLE                : 14
+SEMICOLON            : 13 15 16
+STAR                 : 14
+STRING               : 15 16
+TABLE                : 15 16
+TO                   : 16
 USING                : 
 WHERE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
+export_table         : 5
 import_table         : 4
 operator             : 
 program              : 0
@@ -90,14 +93,18 @@ state 0
     (2) statement_list -> . statement_list statement
     (3) statement_list -> . statement
     (4) statement -> . import_table
-    (14) import_table -> . IMPORT TABLE ID FROM STRING SEMICOLON
+    (5) statement -> . export_table
+    (15) import_table -> . IMPORT TABLE ID FROM STRING SEMICOLON
+    (16) export_table -> . EXPORT TABLE ID TO STRING SEMICOLON
 
-    IMPORT          shift and go to state 5
+    IMPORT          shift and go to state 6
+    EXPORT          shift and go to state 7
 
     program                        shift and go to state 1
     statement_list                 shift and go to state 2
     statement                      shift and go to state 3
     import_table                   shift and go to state 4
+    export_table                   shift and go to state 5
 
 state 1
 
@@ -110,19 +117,24 @@ state 2
     (1) program -> statement_list .
     (2) statement_list -> statement_list . statement
     (4) statement -> . import_table
-    (14) import_table -> . IMPORT TABLE ID FROM STRING SEMICOLON
+    (5) statement -> . export_table
+    (15) import_table -> . IMPORT TABLE ID FROM STRING SEMICOLON
+    (16) export_table -> . EXPORT TABLE ID TO STRING SEMICOLON
 
     $end            reduce using rule 1 (program -> statement_list .)
-    IMPORT          shift and go to state 5
+    IMPORT          shift and go to state 6
+    EXPORT          shift and go to state 7
 
-    statement                      shift and go to state 6
+    statement                      shift and go to state 8
     import_table                   shift and go to state 4
+    export_table                   shift and go to state 5
 
 state 3
 
     (3) statement_list -> statement .
 
     IMPORT          reduce using rule 3 (statement_list -> statement .)
+    EXPORT          reduce using rule 3 (statement_list -> statement .)
     $end            reduce using rule 3 (statement_list -> statement .)
 
 
@@ -131,56 +143,112 @@ state 4
     (4) statement -> import_table .
 
     IMPORT          reduce using rule 4 (statement -> import_table .)
+    EXPORT          reduce using rule 4 (statement -> import_table .)
     $end            reduce using rule 4 (statement -> import_table .)
 
 
 state 5
 
-    (14) import_table -> IMPORT . TABLE ID FROM STRING SEMICOLON
+    (5) statement -> export_table .
 
-    TABLE           shift and go to state 7
+    IMPORT          reduce using rule 5 (statement -> export_table .)
+    EXPORT          reduce using rule 5 (statement -> export_table .)
+    $end            reduce using rule 5 (statement -> export_table .)
 
 
 state 6
 
-    (2) statement_list -> statement_list statement .
+    (15) import_table -> IMPORT . TABLE ID FROM STRING SEMICOLON
 
-    IMPORT          reduce using rule 2 (statement_list -> statement_list statement .)
-    $end            reduce using rule 2 (statement_list -> statement_list statement .)
+    TABLE           shift and go to state 9
 
 
 state 7
 
-    (14) import_table -> IMPORT TABLE . ID FROM STRING SEMICOLON
+    (16) export_table -> EXPORT . TABLE ID TO STRING SEMICOLON
 
-    ID              shift and go to state 8
+    TABLE           shift and go to state 10
 
 
 state 8
 
-    (14) import_table -> IMPORT TABLE ID . FROM STRING SEMICOLON
+    (2) statement_list -> statement_list statement .
 
-    FROM            shift and go to state 9
+    IMPORT          reduce using rule 2 (statement_list -> statement_list statement .)
+    EXPORT          reduce using rule 2 (statement_list -> statement_list statement .)
+    $end            reduce using rule 2 (statement_list -> statement_list statement .)
 
 
 state 9
 
-    (14) import_table -> IMPORT TABLE ID FROM . STRING SEMICOLON
+    (15) import_table -> IMPORT TABLE . ID FROM STRING SEMICOLON
 
-    STRING          shift and go to state 10
+    ID              shift and go to state 11
 
 
 state 10
 
-    (14) import_table -> IMPORT TABLE ID FROM STRING . SEMICOLON
+    (16) export_table -> EXPORT TABLE . ID TO STRING SEMICOLON
 
-    SEMICOLON       shift and go to state 11
+    ID              shift and go to state 12
 
 
 state 11
 
-    (14) import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .
+    (15) import_table -> IMPORT TABLE ID . FROM STRING SEMICOLON
 
-    IMPORT          reduce using rule 14 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
-    $end            reduce using rule 14 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
+    FROM            shift and go to state 13
+
+
+state 12
+
+    (16) export_table -> EXPORT TABLE ID . TO STRING SEMICOLON
+
+    TO              shift and go to state 14
+
+
+state 13
+
+    (15) import_table -> IMPORT TABLE ID FROM . STRING SEMICOLON
+
+    STRING          shift and go to state 15
+
+
+state 14
+
+    (16) export_table -> EXPORT TABLE ID TO . STRING SEMICOLON
+
+    STRING          shift and go to state 16
+
+
+state 15
+
+    (15) import_table -> IMPORT TABLE ID FROM STRING . SEMICOLON
+
+    SEMICOLON       shift and go to state 17
+
+
+state 16
+
+    (16) export_table -> EXPORT TABLE ID TO STRING . SEMICOLON
+
+    SEMICOLON       shift and go to state 18
+
+
+state 17
+
+    (15) import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .
+
+    IMPORT          reduce using rule 15 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
+    EXPORT          reduce using rule 15 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
+    $end            reduce using rule 15 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
+
+
+state 18
+
+    (16) export_table -> EXPORT TABLE ID TO STRING SEMICOLON .
+
+    IMPORT          reduce using rule 16 (export_table -> EXPORT TABLE ID TO STRING SEMICOLON .)
+    EXPORT          reduce using rule 16 (export_table -> EXPORT TABLE ID TO STRING SEMICOLON .)
+    $end            reduce using rule 16 (export_table -> EXPORT TABLE ID TO STRING SEMICOLON .)
 

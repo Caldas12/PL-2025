@@ -39,7 +39,8 @@ class Lexer:
         'discard': 'DISCARD',
         'rename': 'RENAME',
         'print': 'PRINT',
-        'limit': 'LIMIT'
+        'limit': 'LIMIT',
+        'to': 'TO'
     }
 
     tokens += list(reserved.values())
@@ -81,7 +82,7 @@ class Lexer:
         r'\{\-.*?\-\}'
         pass
 
-    t_ignore = ' \t\r\n'
+    t_ignore = '\t\n'
 
     def t_error(self, t):
         print(f"Token not recognized: {t.value[:10]}")
