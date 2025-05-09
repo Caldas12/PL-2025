@@ -1,115 +1,65 @@
 import ply.yacc as yacc
-from lexer import tokens  # Usa os tokens definidos no lexer.py
+from lexer import Lexer
 
-# ---------------------
-# Árvore de Sintaxe Abstrata (exemplo básico)
-# ---------------------
+class Parser:
+    def __init__(self):
+        self.lexer = Lexer()
+        self.tokens = self.lexer.tokens
+        self.lexer.build()
+        self.parser = yacc.yacc(module=self)
 
-class ImportTable:
-    def __init__(self, table_name, file_name):
-        self.table_name = table_name
-        self.file_name = file_name
+    # ---------------------
+    # Regras de Produção
+    # ---------------------
 
-    def __repr__(self):
-        return f"ImportTable({self.table_name}, '{self.file_name}')"
+    def p_program(self, p):
+        '''program : statement_list'''
+        p[0] = p[1]
 
-# ---------------------
-# Regras de Produção
-# ---------------------
+    def p_statement_list(self, p):
+        '''statement_list : statement_list statement
+                        | statement'''
+        if len(p) == 3:
+            p[0] = p[1] + [p[2]]
+        else:
+            p[0] = [p[1]]
 
-def p_program(p):
-    '''program : statement_list'''
-    p[0] = p[1]
+    def p_statement(self, p):
+        '''statement : import_table'''
+        p[0] = p[1]
 
-def p_statement_list(p):
-    '''statement_list : statement_list statement
-                      | statement'''
-    if len(p) == 3:
-        p[0] = p[1] + [p[2]]
-    else:
-        p[0] = [p[1]]
+    def p_operator(self, p):
+        '''operator : EQUALS
+                    | NOT_EQUAL
+                    | LESS_THAN
+                    | GREATER_THAN
+                    | LESS_EQUAL
+                    | GREATER_EQUAL
+                    | COMMA
+                    | SEMICOLON
+                    | STAR'''
+        p[0] = p[1]
 
-def p_statement(p):
-    '''statement : import_table SEMICOLON
-                 | export_table SEMICOLON
-                 | select_statement SEMICOLON'''
-    p[0] = p[1]
+    # --------- Comandos ---------
 
-def p_operator(p):
-    '''operator : EQUALS
-                | NOT_EQUAL
-                | LESS_THAN
-                | GREATER_THAN
-                | LESS_EQUAL
-                | GREATER_EQUAL
-                | COMMA
-                | SEMICOLON
-                | STAR'''
-    p[0] = p[1]
+    def p_import_table(self, p):
+        '''import_table : IMPORT TABLE ID FROM STRING SEMICOLON'''
+        p[0] = ('import', p[3], p[5])
 
-# --------- Comandos ---------
+    # --------- Erros ---------
 
-def p_import_table(p):
-    '''import_table : IMPORT TABLE ID FROM STRING'''
-    p[0] = ImportTable(p[3], p[5])
+    def p_error(self, p):
+        if p:
+            print(f"Erro de sintaxe na linha: {p.lineno}, perto de '{p.value}'")
+        else:
+            print("Erro de sintaxe no fim do input")
 
-def p_export_table(p):
-    '''export_table : EXPORT TABLE ID AS STRING'''
-    p[0] = ('export', p[3], p[5])  
+    # ---------------------
 
-def p_select_statement(p):
-    '''select_statement : SELECT STAR FROM ID where_clause
-                        | SELECT column_list FROM ID where_clause'''
-    if p[2] == '*':
-        p[0] = ('select_all', p[4], p[5])
-    else:
-        p[0] = ('select_columns', p[2], p[4], p[5])
+    def parse_input(self, data):
+        """
+        Função para parsear a entrada e retornar a AST.
+        """
+        result = self.parser.parse(data, lexer=self.lexer.lexer)
+        return result
 
-def p_column_list(p):
-    '''column_list : column_list COMMA ID
-                   | ID'''
-    if len(p) == 4:
-        p[0] = p[1] + [p[3]]
-    else:
-        p[0] = [p[1]]
-
-def p_where_clause(p):
-    '''where_clause : WHERE condition
-                        | empty'''
-    if len(p) == 3:
-        p[0] = p[2]
-    else:
-        p[0] = None
-
-def p_condition(p):
-    '''condition : condition AND condition
-                 | ID operator value'''
-    if len(p) == 4 and p[2] == 'AND':
-        p[0] = ('and', p[1], p[3])
-    else:
-        p[0] = ('cond', p[1], p[2], p[3])
-
-def p_value(p):
-    '''value : NUMBER
-             | STRING'''
-    p[0] = p[1]
-
-def p_empty(p):
-    'empty :'
-    pass # Produz um valor nulo para o caso de não haver nada
-
-
-
-# --------- Erros ---------
-
-def p_error(p):
-    if p:
-        print(f"Erro de sintaxe na linha: {p.lineno}, perto de '{p.value}'")
-    else:
-        print("Erro de sintaxe no fim do input")
-
-# ---------------------
-# Construção do parser
-# ---------------------
-
-parser = yacc.yacc(debug=True)

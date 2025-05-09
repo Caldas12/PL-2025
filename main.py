@@ -1,12 +1,20 @@
-from parser import parser  
+import sys
+from interpreter import Interpreter
 
-entrada = '''
-SELECT * FROM observacoes WHERE Temperatura > 22 AND Humidade < 80;
-SELECT Id FROM observacoes WHERE DirecaoVento = "NE";
-EXPORT TABLE estacoes AS "estacoes.csv";
-'''
+class main:
 
-resultado = parser.parse(entrada)
+    interpreter = Interpreter()
 
-for comando in resultado:
-    print(comando)
+    if len(sys.argv) == 2:
+            try:
+                with open(sys.argv[1], "r") as file:
+                    contents = file.read()
+                    resultado = interpreter.start(contents)
+            except Exception as e:
+                print(e)
+    else:
+        for expr in iter(lambda: input(">> "), ""):
+            try:
+                resultado = interpreter.start(expr)
+            except Exception as e:
+                print(e)
