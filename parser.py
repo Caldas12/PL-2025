@@ -13,12 +13,21 @@ class ImportTable:
     def __repr__(self):
         return f"ImportTable({self.table_name}, '{self.file_name}')"
 
+class ExportTable:
+    def __init__(self, table_name, file_name):
+        self.table_name = table_name
+        self.file_name = file_name
+
+    def __repr__(self):
+        return f"ExportTable({self.table_name}, '{self.file_name}')"
+
+
 # ---------------------
 # Regras de Produção
 # ---------------------
 
-def p_program(p):
-    '''program : statement_list'''
+def p_cql(p):
+    '''cql : statement_list'''
     p[0] = p[1]
 
 def p_statement_list(p):
@@ -55,7 +64,7 @@ def p_import_table(p):
 
 def p_export_table(p):
     '''export_table : EXPORT TABLE ID AS STRING'''
-    p[0] = ('export', p[3], p[5])  
+    p[0] = ExportTable(p[3], p[5])  
 
 def p_select_statement(p):
     '''select_statement : SELECT STAR FROM ID where_clause
@@ -63,7 +72,7 @@ def p_select_statement(p):
     if p[2] == '*':
         p[0] = ('select_all', p[4], p[5])
     else:
-        p[0] = ('select_columns', p[2], p[4], p[5])
+        p[0] = ('select_custom', p[2], p[4], p[5])
 
 def p_column_list(p):
     '''column_list : column_list COMMA ID
