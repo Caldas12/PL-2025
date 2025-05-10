@@ -2,17 +2,10 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    AND
     CALL
-    CREATE
     DO
     END
-    JOIN
-    LIMIT
-    NUMBER
     PROCEDURE
-    USING
-    WHERE
 
 Grammar
 
@@ -26,67 +19,88 @@ Rule 6     statement -> discard_table
 Rule 7     statement -> rename_table
 Rule 8     statement -> print_table
 Rule 9     statement -> select_table
-Rule 10    operator -> EQUALS
-Rule 11    operator -> NOT_EQUAL
-Rule 12    operator -> LESS_THAN
-Rule 13    operator -> GREATER_THAN
-Rule 14    operator -> LESS_EQUAL
-Rule 15    operator -> GREATER_EQUAL
-Rule 16    operator -> COMMA
-Rule 17    operator -> SEMICOLON
-Rule 18    operator -> STAR
-Rule 19    import_table -> IMPORT TABLE ID FROM STRING SEMICOLON
-Rule 20    export_table -> EXPORT TABLE ID AS STRING SEMICOLON
-Rule 21    discard_table -> DISCARD TABLE ID SEMICOLON
-Rule 22    rename_table -> RENAME TABLE ID ID SEMICOLON
-Rule 23    print_table -> PRINT TABLE ID SEMICOLON
-Rule 24    select_table -> SELECT STAR FROM ID SEMICOLON
+Rule 10    statement -> create_table
+Rule 11    operator -> EQUALS
+Rule 12    operator -> NOT_EQUAL
+Rule 13    operator -> LESS_THAN
+Rule 14    operator -> GREATER_THAN
+Rule 15    operator -> LESS_EQUAL
+Rule 16    operator -> GREATER_EQUAL
+Rule 17    operator -> COMMA
+Rule 18    operator -> SEMICOLON
+Rule 19    operator -> STAR
+Rule 20    import_table -> IMPORT TABLE ID FROM STRING SEMICOLON
+Rule 21    export_table -> EXPORT TABLE ID AS STRING SEMICOLON
+Rule 22    discard_table -> DISCARD TABLE ID SEMICOLON
+Rule 23    rename_table -> RENAME TABLE ID ID SEMICOLON
+Rule 24    print_table -> PRINT TABLE ID SEMICOLON
+Rule 25    select_table -> SELECT STAR FROM ID SEMICOLON
+Rule 26    select_table -> select_columns
+Rule 27    select_table -> limit_select_table
+Rule 28    select_table -> select_table_condition
+Rule 29    select_columns -> SELECT comma_id FROM ID SEMICOLON
+Rule 30    comma_id -> ID COMMA comma_id
+Rule 31    comma_id -> ID
+Rule 32    limit_select_table -> SELECT STAR FROM ID LIMIT NUMBER SEMICOLON
+Rule 33    select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID SEMICOLON
+Rule 34    select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID select_table_condition_and
+Rule 35    select_table_condition_and -> AND ID operator ID SEMICOLON
+Rule 36    select_table_condition_and -> AND ID operator ID select_table_condition_and
+Rule 37    create_table -> CREATE TABLE ID select_table
+Rule 38    create_table -> CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON
+Rule 39    create_table -> CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON
 
 Terminals, with rules where they appear
 
-AND                  : 
-AS                   : 20
+AND                  : 35 36
+AS                   : 21
 CALL                 : 
-COMMA                : 16
-CREATE               : 
-DISCARD              : 21
+COMMA                : 17 30
+CREATE               : 37 38 39
+DISCARD              : 22
 DO                   : 
 END                  : 
-EQUALS               : 10
-EXPORT               : 20
-FROM                 : 19 24
-GREATER_EQUAL        : 15
-GREATER_THAN         : 13
-ID                   : 19 20 21 22 22 23 24
-IMPORT               : 19
-JOIN                 : 
-LESS_EQUAL           : 14
-LESS_THAN            : 12
-LIMIT                : 
-NOT_EQUAL            : 11
-NUMBER               : 
-PRINT                : 23
+EQUALS               : 11
+EXPORT               : 21
+FROM                 : 20 25 29 32 33 34 38 39
+GREATER_EQUAL        : 16
+GREATER_THAN         : 14
+ID                   : 20 21 22 23 23 24 25 29 30 31 32 33 33 33 34 34 34 35 35 36 36 37 38 38 38 38 39 39
+IMPORT               : 20
+JOIN                 : 38
+LESS_EQUAL           : 15
+LESS_THAN            : 13
+LIMIT                : 32
+NOT_EQUAL            : 12
+NUMBER               : 32
+PRINT                : 24
 PROCEDURE            : 
-RENAME               : 22
-SELECT               : 24
-SEMICOLON            : 17 19 20 21 22 23 24
-STAR                 : 18 24
-STRING               : 19 20
-TABLE                : 19 20 21 22 23
-USING                : 
-WHERE                : 
+RENAME               : 23
+SELECT               : 25 29 32 33 34 39
+SEMICOLON            : 18 20 21 22 23 24 25 29 32 33 35 38 39
+STAR                 : 19 25 32 33 34
+STRING               : 20 21
+TABLE                : 20 21 22 23 24 37 38 39
+USING                : 38
+WHERE                : 33 34
 error                : 
 
 Nonterminals, with rules where they appear
 
+comma_id             : 29 30 39
+create_table         : 10
 discard_table        : 6
 export_table         : 5
 import_table         : 4
-operator             : 
+limit_select_table   : 27
+operator             : 33 34 35 36
 print_table          : 8
 program              : 0
 rename_table         : 7
-select_table         : 9
+select_columns       : 26
+select_table         : 9 37
+select_table_condition : 28
+select_table_condition_and : 34 36
 statement            : 2 3
 statement_list       : 1 2
 
@@ -104,19 +118,31 @@ state 0
     (7) statement -> . rename_table
     (8) statement -> . print_table
     (9) statement -> . select_table
-    (19) import_table -> . IMPORT TABLE ID FROM STRING SEMICOLON
-    (20) export_table -> . EXPORT TABLE ID AS STRING SEMICOLON
-    (21) discard_table -> . DISCARD TABLE ID SEMICOLON
-    (22) rename_table -> . RENAME TABLE ID ID SEMICOLON
-    (23) print_table -> . PRINT TABLE ID SEMICOLON
-    (24) select_table -> . SELECT STAR FROM ID SEMICOLON
+    (10) statement -> . create_table
+    (20) import_table -> . IMPORT TABLE ID FROM STRING SEMICOLON
+    (21) export_table -> . EXPORT TABLE ID AS STRING SEMICOLON
+    (22) discard_table -> . DISCARD TABLE ID SEMICOLON
+    (23) rename_table -> . RENAME TABLE ID ID SEMICOLON
+    (24) print_table -> . PRINT TABLE ID SEMICOLON
+    (25) select_table -> . SELECT STAR FROM ID SEMICOLON
+    (26) select_table -> . select_columns
+    (27) select_table -> . limit_select_table
+    (28) select_table -> . select_table_condition
+    (37) create_table -> . CREATE TABLE ID select_table
+    (38) create_table -> . CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON
+    (39) create_table -> . CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON
+    (29) select_columns -> . SELECT comma_id FROM ID SEMICOLON
+    (32) limit_select_table -> . SELECT STAR FROM ID LIMIT NUMBER SEMICOLON
+    (33) select_table_condition -> . SELECT STAR FROM ID WHERE ID operator ID SEMICOLON
+    (34) select_table_condition -> . SELECT STAR FROM ID WHERE ID operator ID select_table_condition_and
 
-    IMPORT          shift and go to state 10
-    EXPORT          shift and go to state 11
-    DISCARD         shift and go to state 12
-    RENAME          shift and go to state 13
-    PRINT           shift and go to state 14
-    SELECT          shift and go to state 15
+    IMPORT          shift and go to state 11
+    EXPORT          shift and go to state 12
+    DISCARD         shift and go to state 13
+    RENAME          shift and go to state 14
+    PRINT           shift and go to state 15
+    SELECT          shift and go to state 16
+    CREATE          shift and go to state 20
 
     program                        shift and go to state 1
     statement_list                 shift and go to state 2
@@ -127,6 +153,10 @@ state 0
     rename_table                   shift and go to state 7
     print_table                    shift and go to state 8
     select_table                   shift and go to state 9
+    create_table                   shift and go to state 10
+    select_columns                 shift and go to state 17
+    limit_select_table             shift and go to state 18
+    select_table_condition         shift and go to state 19
 
 state 1
 
@@ -144,28 +174,44 @@ state 2
     (7) statement -> . rename_table
     (8) statement -> . print_table
     (9) statement -> . select_table
-    (19) import_table -> . IMPORT TABLE ID FROM STRING SEMICOLON
-    (20) export_table -> . EXPORT TABLE ID AS STRING SEMICOLON
-    (21) discard_table -> . DISCARD TABLE ID SEMICOLON
-    (22) rename_table -> . RENAME TABLE ID ID SEMICOLON
-    (23) print_table -> . PRINT TABLE ID SEMICOLON
-    (24) select_table -> . SELECT STAR FROM ID SEMICOLON
+    (10) statement -> . create_table
+    (20) import_table -> . IMPORT TABLE ID FROM STRING SEMICOLON
+    (21) export_table -> . EXPORT TABLE ID AS STRING SEMICOLON
+    (22) discard_table -> . DISCARD TABLE ID SEMICOLON
+    (23) rename_table -> . RENAME TABLE ID ID SEMICOLON
+    (24) print_table -> . PRINT TABLE ID SEMICOLON
+    (25) select_table -> . SELECT STAR FROM ID SEMICOLON
+    (26) select_table -> . select_columns
+    (27) select_table -> . limit_select_table
+    (28) select_table -> . select_table_condition
+    (37) create_table -> . CREATE TABLE ID select_table
+    (38) create_table -> . CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON
+    (39) create_table -> . CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON
+    (29) select_columns -> . SELECT comma_id FROM ID SEMICOLON
+    (32) limit_select_table -> . SELECT STAR FROM ID LIMIT NUMBER SEMICOLON
+    (33) select_table_condition -> . SELECT STAR FROM ID WHERE ID operator ID SEMICOLON
+    (34) select_table_condition -> . SELECT STAR FROM ID WHERE ID operator ID select_table_condition_and
 
     $end            reduce using rule 1 (program -> statement_list .)
-    IMPORT          shift and go to state 10
-    EXPORT          shift and go to state 11
-    DISCARD         shift and go to state 12
-    RENAME          shift and go to state 13
-    PRINT           shift and go to state 14
-    SELECT          shift and go to state 15
+    IMPORT          shift and go to state 11
+    EXPORT          shift and go to state 12
+    DISCARD         shift and go to state 13
+    RENAME          shift and go to state 14
+    PRINT           shift and go to state 15
+    SELECT          shift and go to state 16
+    CREATE          shift and go to state 20
 
-    statement                      shift and go to state 16
+    statement                      shift and go to state 21
     import_table                   shift and go to state 4
     export_table                   shift and go to state 5
     discard_table                  shift and go to state 6
     rename_table                   shift and go to state 7
     print_table                    shift and go to state 8
     select_table                   shift and go to state 9
+    create_table                   shift and go to state 10
+    select_columns                 shift and go to state 17
+    limit_select_table             shift and go to state 18
+    select_table_condition         shift and go to state 19
 
 state 3
 
@@ -177,6 +223,7 @@ state 3
     RENAME          reduce using rule 3 (statement_list -> statement .)
     PRINT           reduce using rule 3 (statement_list -> statement .)
     SELECT          reduce using rule 3 (statement_list -> statement .)
+    CREATE          reduce using rule 3 (statement_list -> statement .)
     $end            reduce using rule 3 (statement_list -> statement .)
 
 
@@ -190,6 +237,7 @@ state 4
     RENAME          reduce using rule 4 (statement -> import_table .)
     PRINT           reduce using rule 4 (statement -> import_table .)
     SELECT          reduce using rule 4 (statement -> import_table .)
+    CREATE          reduce using rule 4 (statement -> import_table .)
     $end            reduce using rule 4 (statement -> import_table .)
 
 
@@ -203,6 +251,7 @@ state 5
     RENAME          reduce using rule 5 (statement -> export_table .)
     PRINT           reduce using rule 5 (statement -> export_table .)
     SELECT          reduce using rule 5 (statement -> export_table .)
+    CREATE          reduce using rule 5 (statement -> export_table .)
     $end            reduce using rule 5 (statement -> export_table .)
 
 
@@ -216,6 +265,7 @@ state 6
     RENAME          reduce using rule 6 (statement -> discard_table .)
     PRINT           reduce using rule 6 (statement -> discard_table .)
     SELECT          reduce using rule 6 (statement -> discard_table .)
+    CREATE          reduce using rule 6 (statement -> discard_table .)
     $end            reduce using rule 6 (statement -> discard_table .)
 
 
@@ -229,6 +279,7 @@ state 7
     RENAME          reduce using rule 7 (statement -> rename_table .)
     PRINT           reduce using rule 7 (statement -> rename_table .)
     SELECT          reduce using rule 7 (statement -> rename_table .)
+    CREATE          reduce using rule 7 (statement -> rename_table .)
     $end            reduce using rule 7 (statement -> rename_table .)
 
 
@@ -242,6 +293,7 @@ state 8
     RENAME          reduce using rule 8 (statement -> print_table .)
     PRINT           reduce using rule 8 (statement -> print_table .)
     SELECT          reduce using rule 8 (statement -> print_table .)
+    CREATE          reduce using rule 8 (statement -> print_table .)
     $end            reduce using rule 8 (statement -> print_table .)
 
 
@@ -255,52 +307,126 @@ state 9
     RENAME          reduce using rule 9 (statement -> select_table .)
     PRINT           reduce using rule 9 (statement -> select_table .)
     SELECT          reduce using rule 9 (statement -> select_table .)
+    CREATE          reduce using rule 9 (statement -> select_table .)
     $end            reduce using rule 9 (statement -> select_table .)
 
 
 state 10
 
-    (19) import_table -> IMPORT . TABLE ID FROM STRING SEMICOLON
+    (10) statement -> create_table .
 
-    TABLE           shift and go to state 17
+    IMPORT          reduce using rule 10 (statement -> create_table .)
+    EXPORT          reduce using rule 10 (statement -> create_table .)
+    DISCARD         reduce using rule 10 (statement -> create_table .)
+    RENAME          reduce using rule 10 (statement -> create_table .)
+    PRINT           reduce using rule 10 (statement -> create_table .)
+    SELECT          reduce using rule 10 (statement -> create_table .)
+    CREATE          reduce using rule 10 (statement -> create_table .)
+    $end            reduce using rule 10 (statement -> create_table .)
 
 
 state 11
 
-    (20) export_table -> EXPORT . TABLE ID AS STRING SEMICOLON
+    (20) import_table -> IMPORT . TABLE ID FROM STRING SEMICOLON
 
-    TABLE           shift and go to state 18
+    TABLE           shift and go to state 22
 
 
 state 12
 
-    (21) discard_table -> DISCARD . TABLE ID SEMICOLON
+    (21) export_table -> EXPORT . TABLE ID AS STRING SEMICOLON
 
-    TABLE           shift and go to state 19
+    TABLE           shift and go to state 23
 
 
 state 13
 
-    (22) rename_table -> RENAME . TABLE ID ID SEMICOLON
+    (22) discard_table -> DISCARD . TABLE ID SEMICOLON
 
-    TABLE           shift and go to state 20
+    TABLE           shift and go to state 24
 
 
 state 14
 
-    (23) print_table -> PRINT . TABLE ID SEMICOLON
+    (23) rename_table -> RENAME . TABLE ID ID SEMICOLON
 
-    TABLE           shift and go to state 21
+    TABLE           shift and go to state 25
 
 
 state 15
 
-    (24) select_table -> SELECT . STAR FROM ID SEMICOLON
+    (24) print_table -> PRINT . TABLE ID SEMICOLON
 
-    STAR            shift and go to state 22
+    TABLE           shift and go to state 26
 
 
 state 16
+
+    (25) select_table -> SELECT . STAR FROM ID SEMICOLON
+    (29) select_columns -> SELECT . comma_id FROM ID SEMICOLON
+    (32) limit_select_table -> SELECT . STAR FROM ID LIMIT NUMBER SEMICOLON
+    (33) select_table_condition -> SELECT . STAR FROM ID WHERE ID operator ID SEMICOLON
+    (34) select_table_condition -> SELECT . STAR FROM ID WHERE ID operator ID select_table_condition_and
+    (30) comma_id -> . ID COMMA comma_id
+    (31) comma_id -> . ID
+
+    STAR            shift and go to state 27
+    ID              shift and go to state 28
+
+    comma_id                       shift and go to state 29
+
+state 17
+
+    (26) select_table -> select_columns .
+
+    IMPORT          reduce using rule 26 (select_table -> select_columns .)
+    EXPORT          reduce using rule 26 (select_table -> select_columns .)
+    DISCARD         reduce using rule 26 (select_table -> select_columns .)
+    RENAME          reduce using rule 26 (select_table -> select_columns .)
+    PRINT           reduce using rule 26 (select_table -> select_columns .)
+    SELECT          reduce using rule 26 (select_table -> select_columns .)
+    CREATE          reduce using rule 26 (select_table -> select_columns .)
+    $end            reduce using rule 26 (select_table -> select_columns .)
+
+
+state 18
+
+    (27) select_table -> limit_select_table .
+
+    IMPORT          reduce using rule 27 (select_table -> limit_select_table .)
+    EXPORT          reduce using rule 27 (select_table -> limit_select_table .)
+    DISCARD         reduce using rule 27 (select_table -> limit_select_table .)
+    RENAME          reduce using rule 27 (select_table -> limit_select_table .)
+    PRINT           reduce using rule 27 (select_table -> limit_select_table .)
+    SELECT          reduce using rule 27 (select_table -> limit_select_table .)
+    CREATE          reduce using rule 27 (select_table -> limit_select_table .)
+    $end            reduce using rule 27 (select_table -> limit_select_table .)
+
+
+state 19
+
+    (28) select_table -> select_table_condition .
+
+    IMPORT          reduce using rule 28 (select_table -> select_table_condition .)
+    EXPORT          reduce using rule 28 (select_table -> select_table_condition .)
+    DISCARD         reduce using rule 28 (select_table -> select_table_condition .)
+    RENAME          reduce using rule 28 (select_table -> select_table_condition .)
+    PRINT           reduce using rule 28 (select_table -> select_table_condition .)
+    SELECT          reduce using rule 28 (select_table -> select_table_condition .)
+    CREATE          reduce using rule 28 (select_table -> select_table_condition .)
+    $end            reduce using rule 28 (select_table -> select_table_condition .)
+
+
+state 20
+
+    (37) create_table -> CREATE . TABLE ID select_table
+    (38) create_table -> CREATE . TABLE ID FROM ID JOIN ID USING ID SEMICOLON
+    (39) create_table -> CREATE . TABLE ID SELECT comma_id FROM ID SEMICOLON
+
+    TABLE           shift and go to state 30
+
+
+state 21
 
     (2) statement_list -> statement_list statement .
 
@@ -310,209 +436,722 @@ state 16
     RENAME          reduce using rule 2 (statement_list -> statement_list statement .)
     PRINT           reduce using rule 2 (statement_list -> statement_list statement .)
     SELECT          reduce using rule 2 (statement_list -> statement_list statement .)
+    CREATE          reduce using rule 2 (statement_list -> statement_list statement .)
     $end            reduce using rule 2 (statement_list -> statement_list statement .)
-
-
-state 17
-
-    (19) import_table -> IMPORT TABLE . ID FROM STRING SEMICOLON
-
-    ID              shift and go to state 23
-
-
-state 18
-
-    (20) export_table -> EXPORT TABLE . ID AS STRING SEMICOLON
-
-    ID              shift and go to state 24
-
-
-state 19
-
-    (21) discard_table -> DISCARD TABLE . ID SEMICOLON
-
-    ID              shift and go to state 25
-
-
-state 20
-
-    (22) rename_table -> RENAME TABLE . ID ID SEMICOLON
-
-    ID              shift and go to state 26
-
-
-state 21
-
-    (23) print_table -> PRINT TABLE . ID SEMICOLON
-
-    ID              shift and go to state 27
 
 
 state 22
 
-    (24) select_table -> SELECT STAR . FROM ID SEMICOLON
+    (20) import_table -> IMPORT TABLE . ID FROM STRING SEMICOLON
 
-    FROM            shift and go to state 28
+    ID              shift and go to state 31
 
 
 state 23
 
-    (19) import_table -> IMPORT TABLE ID . FROM STRING SEMICOLON
-
-    FROM            shift and go to state 29
-
-
-state 24
-
-    (20) export_table -> EXPORT TABLE ID . AS STRING SEMICOLON
-
-    AS              shift and go to state 30
-
-
-state 25
-
-    (21) discard_table -> DISCARD TABLE ID . SEMICOLON
-
-    SEMICOLON       shift and go to state 31
-
-
-state 26
-
-    (22) rename_table -> RENAME TABLE ID . ID SEMICOLON
+    (21) export_table -> EXPORT TABLE . ID AS STRING SEMICOLON
 
     ID              shift and go to state 32
 
 
-state 27
+state 24
 
-    (23) print_table -> PRINT TABLE ID . SEMICOLON
+    (22) discard_table -> DISCARD TABLE . ID SEMICOLON
 
-    SEMICOLON       shift and go to state 33
+    ID              shift and go to state 33
 
 
-state 28
+state 25
 
-    (24) select_table -> SELECT STAR FROM . ID SEMICOLON
+    (23) rename_table -> RENAME TABLE . ID ID SEMICOLON
 
     ID              shift and go to state 34
 
 
+state 26
+
+    (24) print_table -> PRINT TABLE . ID SEMICOLON
+
+    ID              shift and go to state 35
+
+
+state 27
+
+    (25) select_table -> SELECT STAR . FROM ID SEMICOLON
+    (32) limit_select_table -> SELECT STAR . FROM ID LIMIT NUMBER SEMICOLON
+    (33) select_table_condition -> SELECT STAR . FROM ID WHERE ID operator ID SEMICOLON
+    (34) select_table_condition -> SELECT STAR . FROM ID WHERE ID operator ID select_table_condition_and
+
+    FROM            shift and go to state 36
+
+
+state 28
+
+    (30) comma_id -> ID . COMMA comma_id
+    (31) comma_id -> ID .
+
+    COMMA           shift and go to state 37
+    FROM            reduce using rule 31 (comma_id -> ID .)
+
+
 state 29
 
-    (19) import_table -> IMPORT TABLE ID FROM . STRING SEMICOLON
+    (29) select_columns -> SELECT comma_id . FROM ID SEMICOLON
 
-    STRING          shift and go to state 35
+    FROM            shift and go to state 38
 
 
 state 30
 
-    (20) export_table -> EXPORT TABLE ID AS . STRING SEMICOLON
+    (37) create_table -> CREATE TABLE . ID select_table
+    (38) create_table -> CREATE TABLE . ID FROM ID JOIN ID USING ID SEMICOLON
+    (39) create_table -> CREATE TABLE . ID SELECT comma_id FROM ID SEMICOLON
 
-    STRING          shift and go to state 36
+    ID              shift and go to state 39
 
 
 state 31
 
-    (21) discard_table -> DISCARD TABLE ID SEMICOLON .
+    (20) import_table -> IMPORT TABLE ID . FROM STRING SEMICOLON
 
-    IMPORT          reduce using rule 21 (discard_table -> DISCARD TABLE ID SEMICOLON .)
-    EXPORT          reduce using rule 21 (discard_table -> DISCARD TABLE ID SEMICOLON .)
-    DISCARD         reduce using rule 21 (discard_table -> DISCARD TABLE ID SEMICOLON .)
-    RENAME          reduce using rule 21 (discard_table -> DISCARD TABLE ID SEMICOLON .)
-    PRINT           reduce using rule 21 (discard_table -> DISCARD TABLE ID SEMICOLON .)
-    SELECT          reduce using rule 21 (discard_table -> DISCARD TABLE ID SEMICOLON .)
-    $end            reduce using rule 21 (discard_table -> DISCARD TABLE ID SEMICOLON .)
+    FROM            shift and go to state 40
 
 
 state 32
 
-    (22) rename_table -> RENAME TABLE ID ID . SEMICOLON
+    (21) export_table -> EXPORT TABLE ID . AS STRING SEMICOLON
 
-    SEMICOLON       shift and go to state 37
+    AS              shift and go to state 41
 
 
 state 33
 
-    (23) print_table -> PRINT TABLE ID SEMICOLON .
+    (22) discard_table -> DISCARD TABLE ID . SEMICOLON
 
-    IMPORT          reduce using rule 23 (print_table -> PRINT TABLE ID SEMICOLON .)
-    EXPORT          reduce using rule 23 (print_table -> PRINT TABLE ID SEMICOLON .)
-    DISCARD         reduce using rule 23 (print_table -> PRINT TABLE ID SEMICOLON .)
-    RENAME          reduce using rule 23 (print_table -> PRINT TABLE ID SEMICOLON .)
-    PRINT           reduce using rule 23 (print_table -> PRINT TABLE ID SEMICOLON .)
-    SELECT          reduce using rule 23 (print_table -> PRINT TABLE ID SEMICOLON .)
-    $end            reduce using rule 23 (print_table -> PRINT TABLE ID SEMICOLON .)
+    SEMICOLON       shift and go to state 42
 
 
 state 34
 
-    (24) select_table -> SELECT STAR FROM ID . SEMICOLON
+    (23) rename_table -> RENAME TABLE ID . ID SEMICOLON
 
-    SEMICOLON       shift and go to state 38
+    ID              shift and go to state 43
 
 
 state 35
 
-    (19) import_table -> IMPORT TABLE ID FROM STRING . SEMICOLON
+    (24) print_table -> PRINT TABLE ID . SEMICOLON
 
-    SEMICOLON       shift and go to state 39
+    SEMICOLON       shift and go to state 44
 
 
 state 36
 
-    (20) export_table -> EXPORT TABLE ID AS STRING . SEMICOLON
+    (25) select_table -> SELECT STAR FROM . ID SEMICOLON
+    (32) limit_select_table -> SELECT STAR FROM . ID LIMIT NUMBER SEMICOLON
+    (33) select_table_condition -> SELECT STAR FROM . ID WHERE ID operator ID SEMICOLON
+    (34) select_table_condition -> SELECT STAR FROM . ID WHERE ID operator ID select_table_condition_and
 
-    SEMICOLON       shift and go to state 40
+    ID              shift and go to state 45
 
 
 state 37
 
-    (22) rename_table -> RENAME TABLE ID ID SEMICOLON .
+    (30) comma_id -> ID COMMA . comma_id
+    (30) comma_id -> . ID COMMA comma_id
+    (31) comma_id -> . ID
 
-    IMPORT          reduce using rule 22 (rename_table -> RENAME TABLE ID ID SEMICOLON .)
-    EXPORT          reduce using rule 22 (rename_table -> RENAME TABLE ID ID SEMICOLON .)
-    DISCARD         reduce using rule 22 (rename_table -> RENAME TABLE ID ID SEMICOLON .)
-    RENAME          reduce using rule 22 (rename_table -> RENAME TABLE ID ID SEMICOLON .)
-    PRINT           reduce using rule 22 (rename_table -> RENAME TABLE ID ID SEMICOLON .)
-    SELECT          reduce using rule 22 (rename_table -> RENAME TABLE ID ID SEMICOLON .)
-    $end            reduce using rule 22 (rename_table -> RENAME TABLE ID ID SEMICOLON .)
+    ID              shift and go to state 28
 
+    comma_id                       shift and go to state 46
 
 state 38
 
-    (24) select_table -> SELECT STAR FROM ID SEMICOLON .
+    (29) select_columns -> SELECT comma_id FROM . ID SEMICOLON
 
-    IMPORT          reduce using rule 24 (select_table -> SELECT STAR FROM ID SEMICOLON .)
-    EXPORT          reduce using rule 24 (select_table -> SELECT STAR FROM ID SEMICOLON .)
-    DISCARD         reduce using rule 24 (select_table -> SELECT STAR FROM ID SEMICOLON .)
-    RENAME          reduce using rule 24 (select_table -> SELECT STAR FROM ID SEMICOLON .)
-    PRINT           reduce using rule 24 (select_table -> SELECT STAR FROM ID SEMICOLON .)
-    SELECT          reduce using rule 24 (select_table -> SELECT STAR FROM ID SEMICOLON .)
-    $end            reduce using rule 24 (select_table -> SELECT STAR FROM ID SEMICOLON .)
+    ID              shift and go to state 47
 
 
 state 39
 
-    (19) import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .
+    (37) create_table -> CREATE TABLE ID . select_table
+    (38) create_table -> CREATE TABLE ID . FROM ID JOIN ID USING ID SEMICOLON
+    (39) create_table -> CREATE TABLE ID . SELECT comma_id FROM ID SEMICOLON
+    (25) select_table -> . SELECT STAR FROM ID SEMICOLON
+    (26) select_table -> . select_columns
+    (27) select_table -> . limit_select_table
+    (28) select_table -> . select_table_condition
+    (29) select_columns -> . SELECT comma_id FROM ID SEMICOLON
+    (32) limit_select_table -> . SELECT STAR FROM ID LIMIT NUMBER SEMICOLON
+    (33) select_table_condition -> . SELECT STAR FROM ID WHERE ID operator ID SEMICOLON
+    (34) select_table_condition -> . SELECT STAR FROM ID WHERE ID operator ID select_table_condition_and
 
-    IMPORT          reduce using rule 19 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
-    EXPORT          reduce using rule 19 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
-    DISCARD         reduce using rule 19 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
-    RENAME          reduce using rule 19 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
-    PRINT           reduce using rule 19 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
-    SELECT          reduce using rule 19 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
-    $end            reduce using rule 19 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
+    FROM            shift and go to state 49
+    SELECT          shift and go to state 50
 
+    select_table                   shift and go to state 48
+    select_columns                 shift and go to state 17
+    limit_select_table             shift and go to state 18
+    select_table_condition         shift and go to state 19
 
 state 40
 
-    (20) export_table -> EXPORT TABLE ID AS STRING SEMICOLON .
+    (20) import_table -> IMPORT TABLE ID FROM . STRING SEMICOLON
 
-    IMPORT          reduce using rule 20 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
-    EXPORT          reduce using rule 20 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
-    DISCARD         reduce using rule 20 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
-    RENAME          reduce using rule 20 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
-    PRINT           reduce using rule 20 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
-    SELECT          reduce using rule 20 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
-    $end            reduce using rule 20 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
+    STRING          shift and go to state 51
 
+
+state 41
+
+    (21) export_table -> EXPORT TABLE ID AS . STRING SEMICOLON
+
+    STRING          shift and go to state 52
+
+
+state 42
+
+    (22) discard_table -> DISCARD TABLE ID SEMICOLON .
+
+    IMPORT          reduce using rule 22 (discard_table -> DISCARD TABLE ID SEMICOLON .)
+    EXPORT          reduce using rule 22 (discard_table -> DISCARD TABLE ID SEMICOLON .)
+    DISCARD         reduce using rule 22 (discard_table -> DISCARD TABLE ID SEMICOLON .)
+    RENAME          reduce using rule 22 (discard_table -> DISCARD TABLE ID SEMICOLON .)
+    PRINT           reduce using rule 22 (discard_table -> DISCARD TABLE ID SEMICOLON .)
+    SELECT          reduce using rule 22 (discard_table -> DISCARD TABLE ID SEMICOLON .)
+    CREATE          reduce using rule 22 (discard_table -> DISCARD TABLE ID SEMICOLON .)
+    $end            reduce using rule 22 (discard_table -> DISCARD TABLE ID SEMICOLON .)
+
+
+state 43
+
+    (23) rename_table -> RENAME TABLE ID ID . SEMICOLON
+
+    SEMICOLON       shift and go to state 53
+
+
+state 44
+
+    (24) print_table -> PRINT TABLE ID SEMICOLON .
+
+    IMPORT          reduce using rule 24 (print_table -> PRINT TABLE ID SEMICOLON .)
+    EXPORT          reduce using rule 24 (print_table -> PRINT TABLE ID SEMICOLON .)
+    DISCARD         reduce using rule 24 (print_table -> PRINT TABLE ID SEMICOLON .)
+    RENAME          reduce using rule 24 (print_table -> PRINT TABLE ID SEMICOLON .)
+    PRINT           reduce using rule 24 (print_table -> PRINT TABLE ID SEMICOLON .)
+    SELECT          reduce using rule 24 (print_table -> PRINT TABLE ID SEMICOLON .)
+    CREATE          reduce using rule 24 (print_table -> PRINT TABLE ID SEMICOLON .)
+    $end            reduce using rule 24 (print_table -> PRINT TABLE ID SEMICOLON .)
+
+
+state 45
+
+    (25) select_table -> SELECT STAR FROM ID . SEMICOLON
+    (32) limit_select_table -> SELECT STAR FROM ID . LIMIT NUMBER SEMICOLON
+    (33) select_table_condition -> SELECT STAR FROM ID . WHERE ID operator ID SEMICOLON
+    (34) select_table_condition -> SELECT STAR FROM ID . WHERE ID operator ID select_table_condition_and
+
+    SEMICOLON       shift and go to state 54
+    LIMIT           shift and go to state 55
+    WHERE           shift and go to state 56
+
+
+state 46
+
+    (30) comma_id -> ID COMMA comma_id .
+
+    FROM            reduce using rule 30 (comma_id -> ID COMMA comma_id .)
+
+
+state 47
+
+    (29) select_columns -> SELECT comma_id FROM ID . SEMICOLON
+
+    SEMICOLON       shift and go to state 57
+
+
+state 48
+
+    (37) create_table -> CREATE TABLE ID select_table .
+
+    IMPORT          reduce using rule 37 (create_table -> CREATE TABLE ID select_table .)
+    EXPORT          reduce using rule 37 (create_table -> CREATE TABLE ID select_table .)
+    DISCARD         reduce using rule 37 (create_table -> CREATE TABLE ID select_table .)
+    RENAME          reduce using rule 37 (create_table -> CREATE TABLE ID select_table .)
+    PRINT           reduce using rule 37 (create_table -> CREATE TABLE ID select_table .)
+    SELECT          reduce using rule 37 (create_table -> CREATE TABLE ID select_table .)
+    CREATE          reduce using rule 37 (create_table -> CREATE TABLE ID select_table .)
+    $end            reduce using rule 37 (create_table -> CREATE TABLE ID select_table .)
+
+
+state 49
+
+    (38) create_table -> CREATE TABLE ID FROM . ID JOIN ID USING ID SEMICOLON
+
+    ID              shift and go to state 58
+
+
+state 50
+
+    (39) create_table -> CREATE TABLE ID SELECT . comma_id FROM ID SEMICOLON
+    (25) select_table -> SELECT . STAR FROM ID SEMICOLON
+    (29) select_columns -> SELECT . comma_id FROM ID SEMICOLON
+    (32) limit_select_table -> SELECT . STAR FROM ID LIMIT NUMBER SEMICOLON
+    (33) select_table_condition -> SELECT . STAR FROM ID WHERE ID operator ID SEMICOLON
+    (34) select_table_condition -> SELECT . STAR FROM ID WHERE ID operator ID select_table_condition_and
+    (30) comma_id -> . ID COMMA comma_id
+    (31) comma_id -> . ID
+
+    STAR            shift and go to state 27
+    ID              shift and go to state 28
+
+    comma_id                       shift and go to state 59
+
+state 51
+
+    (20) import_table -> IMPORT TABLE ID FROM STRING . SEMICOLON
+
+    SEMICOLON       shift and go to state 60
+
+
+state 52
+
+    (21) export_table -> EXPORT TABLE ID AS STRING . SEMICOLON
+
+    SEMICOLON       shift and go to state 61
+
+
+state 53
+
+    (23) rename_table -> RENAME TABLE ID ID SEMICOLON .
+
+    IMPORT          reduce using rule 23 (rename_table -> RENAME TABLE ID ID SEMICOLON .)
+    EXPORT          reduce using rule 23 (rename_table -> RENAME TABLE ID ID SEMICOLON .)
+    DISCARD         reduce using rule 23 (rename_table -> RENAME TABLE ID ID SEMICOLON .)
+    RENAME          reduce using rule 23 (rename_table -> RENAME TABLE ID ID SEMICOLON .)
+    PRINT           reduce using rule 23 (rename_table -> RENAME TABLE ID ID SEMICOLON .)
+    SELECT          reduce using rule 23 (rename_table -> RENAME TABLE ID ID SEMICOLON .)
+    CREATE          reduce using rule 23 (rename_table -> RENAME TABLE ID ID SEMICOLON .)
+    $end            reduce using rule 23 (rename_table -> RENAME TABLE ID ID SEMICOLON .)
+
+
+state 54
+
+    (25) select_table -> SELECT STAR FROM ID SEMICOLON .
+
+    IMPORT          reduce using rule 25 (select_table -> SELECT STAR FROM ID SEMICOLON .)
+    EXPORT          reduce using rule 25 (select_table -> SELECT STAR FROM ID SEMICOLON .)
+    DISCARD         reduce using rule 25 (select_table -> SELECT STAR FROM ID SEMICOLON .)
+    RENAME          reduce using rule 25 (select_table -> SELECT STAR FROM ID SEMICOLON .)
+    PRINT           reduce using rule 25 (select_table -> SELECT STAR FROM ID SEMICOLON .)
+    SELECT          reduce using rule 25 (select_table -> SELECT STAR FROM ID SEMICOLON .)
+    CREATE          reduce using rule 25 (select_table -> SELECT STAR FROM ID SEMICOLON .)
+    $end            reduce using rule 25 (select_table -> SELECT STAR FROM ID SEMICOLON .)
+
+
+state 55
+
+    (32) limit_select_table -> SELECT STAR FROM ID LIMIT . NUMBER SEMICOLON
+
+    NUMBER          shift and go to state 62
+
+
+state 56
+
+    (33) select_table_condition -> SELECT STAR FROM ID WHERE . ID operator ID SEMICOLON
+    (34) select_table_condition -> SELECT STAR FROM ID WHERE . ID operator ID select_table_condition_and
+
+    ID              shift and go to state 63
+
+
+state 57
+
+    (29) select_columns -> SELECT comma_id FROM ID SEMICOLON .
+
+    IMPORT          reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+    EXPORT          reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+    DISCARD         reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+    RENAME          reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+    PRINT           reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+    SELECT          reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+    CREATE          reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+    $end            reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+
+
+state 58
+
+    (38) create_table -> CREATE TABLE ID FROM ID . JOIN ID USING ID SEMICOLON
+
+    JOIN            shift and go to state 64
+
+
+state 59
+
+    (39) create_table -> CREATE TABLE ID SELECT comma_id . FROM ID SEMICOLON
+    (29) select_columns -> SELECT comma_id . FROM ID SEMICOLON
+
+    FROM            shift and go to state 65
+
+
+state 60
+
+    (20) import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .
+
+    IMPORT          reduce using rule 20 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
+    EXPORT          reduce using rule 20 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
+    DISCARD         reduce using rule 20 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
+    RENAME          reduce using rule 20 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
+    PRINT           reduce using rule 20 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
+    SELECT          reduce using rule 20 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
+    CREATE          reduce using rule 20 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
+    $end            reduce using rule 20 (import_table -> IMPORT TABLE ID FROM STRING SEMICOLON .)
+
+
+state 61
+
+    (21) export_table -> EXPORT TABLE ID AS STRING SEMICOLON .
+
+    IMPORT          reduce using rule 21 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
+    EXPORT          reduce using rule 21 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
+    DISCARD         reduce using rule 21 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
+    RENAME          reduce using rule 21 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
+    PRINT           reduce using rule 21 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
+    SELECT          reduce using rule 21 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
+    CREATE          reduce using rule 21 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
+    $end            reduce using rule 21 (export_table -> EXPORT TABLE ID AS STRING SEMICOLON .)
+
+
+state 62
+
+    (32) limit_select_table -> SELECT STAR FROM ID LIMIT NUMBER . SEMICOLON
+
+    SEMICOLON       shift and go to state 66
+
+
+state 63
+
+    (33) select_table_condition -> SELECT STAR FROM ID WHERE ID . operator ID SEMICOLON
+    (34) select_table_condition -> SELECT STAR FROM ID WHERE ID . operator ID select_table_condition_and
+    (11) operator -> . EQUALS
+    (12) operator -> . NOT_EQUAL
+    (13) operator -> . LESS_THAN
+    (14) operator -> . GREATER_THAN
+    (15) operator -> . LESS_EQUAL
+    (16) operator -> . GREATER_EQUAL
+    (17) operator -> . COMMA
+    (18) operator -> . SEMICOLON
+    (19) operator -> . STAR
+
+    EQUALS          shift and go to state 70
+    NOT_EQUAL       shift and go to state 71
+    LESS_THAN       shift and go to state 72
+    GREATER_THAN    shift and go to state 73
+    LESS_EQUAL      shift and go to state 74
+    GREATER_EQUAL   shift and go to state 75
+    COMMA           shift and go to state 76
+    SEMICOLON       shift and go to state 69
+    STAR            shift and go to state 67
+
+    operator                       shift and go to state 68
+
+state 64
+
+    (38) create_table -> CREATE TABLE ID FROM ID JOIN . ID USING ID SEMICOLON
+
+    ID              shift and go to state 77
+
+
+state 65
+
+    (39) create_table -> CREATE TABLE ID SELECT comma_id FROM . ID SEMICOLON
+    (29) select_columns -> SELECT comma_id FROM . ID SEMICOLON
+
+    ID              shift and go to state 78
+
+
+state 66
+
+    (32) limit_select_table -> SELECT STAR FROM ID LIMIT NUMBER SEMICOLON .
+
+    IMPORT          reduce using rule 32 (limit_select_table -> SELECT STAR FROM ID LIMIT NUMBER SEMICOLON .)
+    EXPORT          reduce using rule 32 (limit_select_table -> SELECT STAR FROM ID LIMIT NUMBER SEMICOLON .)
+    DISCARD         reduce using rule 32 (limit_select_table -> SELECT STAR FROM ID LIMIT NUMBER SEMICOLON .)
+    RENAME          reduce using rule 32 (limit_select_table -> SELECT STAR FROM ID LIMIT NUMBER SEMICOLON .)
+    PRINT           reduce using rule 32 (limit_select_table -> SELECT STAR FROM ID LIMIT NUMBER SEMICOLON .)
+    SELECT          reduce using rule 32 (limit_select_table -> SELECT STAR FROM ID LIMIT NUMBER SEMICOLON .)
+    CREATE          reduce using rule 32 (limit_select_table -> SELECT STAR FROM ID LIMIT NUMBER SEMICOLON .)
+    $end            reduce using rule 32 (limit_select_table -> SELECT STAR FROM ID LIMIT NUMBER SEMICOLON .)
+
+
+state 67
+
+    (19) operator -> STAR .
+
+    ID              reduce using rule 19 (operator -> STAR .)
+
+
+state 68
+
+    (33) select_table_condition -> SELECT STAR FROM ID WHERE ID operator . ID SEMICOLON
+    (34) select_table_condition -> SELECT STAR FROM ID WHERE ID operator . ID select_table_condition_and
+
+    ID              shift and go to state 79
+
+
+state 69
+
+    (18) operator -> SEMICOLON .
+
+    ID              reduce using rule 18 (operator -> SEMICOLON .)
+
+
+state 70
+
+    (11) operator -> EQUALS .
+
+    ID              reduce using rule 11 (operator -> EQUALS .)
+
+
+state 71
+
+    (12) operator -> NOT_EQUAL .
+
+    ID              reduce using rule 12 (operator -> NOT_EQUAL .)
+
+
+state 72
+
+    (13) operator -> LESS_THAN .
+
+    ID              reduce using rule 13 (operator -> LESS_THAN .)
+
+
+state 73
+
+    (14) operator -> GREATER_THAN .
+
+    ID              reduce using rule 14 (operator -> GREATER_THAN .)
+
+
+state 74
+
+    (15) operator -> LESS_EQUAL .
+
+    ID              reduce using rule 15 (operator -> LESS_EQUAL .)
+
+
+state 75
+
+    (16) operator -> GREATER_EQUAL .
+
+    ID              reduce using rule 16 (operator -> GREATER_EQUAL .)
+
+
+state 76
+
+    (17) operator -> COMMA .
+
+    ID              reduce using rule 17 (operator -> COMMA .)
+
+
+state 77
+
+    (38) create_table -> CREATE TABLE ID FROM ID JOIN ID . USING ID SEMICOLON
+
+    USING           shift and go to state 80
+
+
+state 78
+
+    (39) create_table -> CREATE TABLE ID SELECT comma_id FROM ID . SEMICOLON
+    (29) select_columns -> SELECT comma_id FROM ID . SEMICOLON
+
+    SEMICOLON       shift and go to state 81
+
+
+state 79
+
+    (33) select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID . SEMICOLON
+    (34) select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID . select_table_condition_and
+    (35) select_table_condition_and -> . AND ID operator ID SEMICOLON
+    (36) select_table_condition_and -> . AND ID operator ID select_table_condition_and
+
+    SEMICOLON       shift and go to state 82
+    AND             shift and go to state 84
+
+    select_table_condition_and     shift and go to state 83
+
+state 80
+
+    (38) create_table -> CREATE TABLE ID FROM ID JOIN ID USING . ID SEMICOLON
+
+    ID              shift and go to state 85
+
+
+state 81
+
+    (39) create_table -> CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON .
+    (29) select_columns -> SELECT comma_id FROM ID SEMICOLON .
+
+  ! reduce/reduce conflict for IMPORT resolved using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+  ! reduce/reduce conflict for EXPORT resolved using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+  ! reduce/reduce conflict for DISCARD resolved using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+  ! reduce/reduce conflict for RENAME resolved using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+  ! reduce/reduce conflict for PRINT resolved using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+  ! reduce/reduce conflict for SELECT resolved using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+  ! reduce/reduce conflict for CREATE resolved using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+  ! reduce/reduce conflict for $end resolved using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+    IMPORT          reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+    EXPORT          reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+    DISCARD         reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+    RENAME          reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+    PRINT           reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+    SELECT          reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+    CREATE          reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+    $end            reduce using rule 29 (select_columns -> SELECT comma_id FROM ID SEMICOLON .)
+
+  ! IMPORT          [ reduce using rule 39 (create_table -> CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON .) ]
+  ! EXPORT          [ reduce using rule 39 (create_table -> CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON .) ]
+  ! DISCARD         [ reduce using rule 39 (create_table -> CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON .) ]
+  ! RENAME          [ reduce using rule 39 (create_table -> CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON .) ]
+  ! PRINT           [ reduce using rule 39 (create_table -> CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON .) ]
+  ! SELECT          [ reduce using rule 39 (create_table -> CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON .) ]
+  ! CREATE          [ reduce using rule 39 (create_table -> CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON .) ]
+  ! $end            [ reduce using rule 39 (create_table -> CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON .) ]
+
+
+state 82
+
+    (33) select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID SEMICOLON .
+
+    IMPORT          reduce using rule 33 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID SEMICOLON .)
+    EXPORT          reduce using rule 33 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID SEMICOLON .)
+    DISCARD         reduce using rule 33 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID SEMICOLON .)
+    RENAME          reduce using rule 33 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID SEMICOLON .)
+    PRINT           reduce using rule 33 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID SEMICOLON .)
+    SELECT          reduce using rule 33 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID SEMICOLON .)
+    CREATE          reduce using rule 33 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID SEMICOLON .)
+    $end            reduce using rule 33 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID SEMICOLON .)
+
+
+state 83
+
+    (34) select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID select_table_condition_and .
+
+    IMPORT          reduce using rule 34 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID select_table_condition_and .)
+    EXPORT          reduce using rule 34 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID select_table_condition_and .)
+    DISCARD         reduce using rule 34 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID select_table_condition_and .)
+    RENAME          reduce using rule 34 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID select_table_condition_and .)
+    PRINT           reduce using rule 34 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID select_table_condition_and .)
+    SELECT          reduce using rule 34 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID select_table_condition_and .)
+    CREATE          reduce using rule 34 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID select_table_condition_and .)
+    $end            reduce using rule 34 (select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID select_table_condition_and .)
+
+
+state 84
+
+    (35) select_table_condition_and -> AND . ID operator ID SEMICOLON
+    (36) select_table_condition_and -> AND . ID operator ID select_table_condition_and
+
+    ID              shift and go to state 86
+
+
+state 85
+
+    (38) create_table -> CREATE TABLE ID FROM ID JOIN ID USING ID . SEMICOLON
+
+    SEMICOLON       shift and go to state 87
+
+
+state 86
+
+    (35) select_table_condition_and -> AND ID . operator ID SEMICOLON
+    (36) select_table_condition_and -> AND ID . operator ID select_table_condition_and
+    (11) operator -> . EQUALS
+    (12) operator -> . NOT_EQUAL
+    (13) operator -> . LESS_THAN
+    (14) operator -> . GREATER_THAN
+    (15) operator -> . LESS_EQUAL
+    (16) operator -> . GREATER_EQUAL
+    (17) operator -> . COMMA
+    (18) operator -> . SEMICOLON
+    (19) operator -> . STAR
+
+    EQUALS          shift and go to state 70
+    NOT_EQUAL       shift and go to state 71
+    LESS_THAN       shift and go to state 72
+    GREATER_THAN    shift and go to state 73
+    LESS_EQUAL      shift and go to state 74
+    GREATER_EQUAL   shift and go to state 75
+    COMMA           shift and go to state 76
+    SEMICOLON       shift and go to state 69
+    STAR            shift and go to state 67
+
+    operator                       shift and go to state 88
+
+state 87
+
+    (38) create_table -> CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON .
+
+    IMPORT          reduce using rule 38 (create_table -> CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON .)
+    EXPORT          reduce using rule 38 (create_table -> CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON .)
+    DISCARD         reduce using rule 38 (create_table -> CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON .)
+    RENAME          reduce using rule 38 (create_table -> CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON .)
+    PRINT           reduce using rule 38 (create_table -> CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON .)
+    SELECT          reduce using rule 38 (create_table -> CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON .)
+    CREATE          reduce using rule 38 (create_table -> CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON .)
+    $end            reduce using rule 38 (create_table -> CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON .)
+
+
+state 88
+
+    (35) select_table_condition_and -> AND ID operator . ID SEMICOLON
+    (36) select_table_condition_and -> AND ID operator . ID select_table_condition_and
+
+    ID              shift and go to state 89
+
+
+state 89
+
+    (35) select_table_condition_and -> AND ID operator ID . SEMICOLON
+    (36) select_table_condition_and -> AND ID operator ID . select_table_condition_and
+    (35) select_table_condition_and -> . AND ID operator ID SEMICOLON
+    (36) select_table_condition_and -> . AND ID operator ID select_table_condition_and
+
+    SEMICOLON       shift and go to state 90
+    AND             shift and go to state 84
+
+    select_table_condition_and     shift and go to state 91
+
+state 90
+
+    (35) select_table_condition_and -> AND ID operator ID SEMICOLON .
+
+    IMPORT          reduce using rule 35 (select_table_condition_and -> AND ID operator ID SEMICOLON .)
+    EXPORT          reduce using rule 35 (select_table_condition_and -> AND ID operator ID SEMICOLON .)
+    DISCARD         reduce using rule 35 (select_table_condition_and -> AND ID operator ID SEMICOLON .)
+    RENAME          reduce using rule 35 (select_table_condition_and -> AND ID operator ID SEMICOLON .)
+    PRINT           reduce using rule 35 (select_table_condition_and -> AND ID operator ID SEMICOLON .)
+    SELECT          reduce using rule 35 (select_table_condition_and -> AND ID operator ID SEMICOLON .)
+    CREATE          reduce using rule 35 (select_table_condition_and -> AND ID operator ID SEMICOLON .)
+    $end            reduce using rule 35 (select_table_condition_and -> AND ID operator ID SEMICOLON .)
+
+
+state 91
+
+    (36) select_table_condition_and -> AND ID operator ID select_table_condition_and .
+
+    IMPORT          reduce using rule 36 (select_table_condition_and -> AND ID operator ID select_table_condition_and .)
+    EXPORT          reduce using rule 36 (select_table_condition_and -> AND ID operator ID select_table_condition_and .)
+    DISCARD         reduce using rule 36 (select_table_condition_and -> AND ID operator ID select_table_condition_and .)
+    RENAME          reduce using rule 36 (select_table_condition_and -> AND ID operator ID select_table_condition_and .)
+    PRINT           reduce using rule 36 (select_table_condition_and -> AND ID operator ID select_table_condition_and .)
+    SELECT          reduce using rule 36 (select_table_condition_and -> AND ID operator ID select_table_condition_and .)
+    CREATE          reduce using rule 36 (select_table_condition_and -> AND ID operator ID select_table_condition_and .)
+    $end            reduce using rule 36 (select_table_condition_and -> AND ID operator ID select_table_condition_and .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: reduce/reduce conflict in state 81 resolved using rule (select_columns -> SELECT comma_id FROM ID SEMICOLON)
+WARNING: rejected rule (create_table -> CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON) in state 81
+WARNING: Rule (create_table -> CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON) is never reduced

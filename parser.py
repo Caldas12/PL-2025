@@ -30,7 +30,8 @@ class Parser:
                     | discard_table
                     | rename_table
                     | print_table
-                    | select_table'''
+                    | select_table
+                    | create_table'''
         p[0] = p[1]
 
     def p_operator(self, p):
@@ -70,9 +71,59 @@ class Parser:
     # --------- Comandos - Queries ---------
 
     def p_select_table(self, p):
-        '''select_table : SELECT STAR FROM ID SEMICOLON'''
-        p[0] = ('select', p[2], p[4])
+        '''select_table : SELECT STAR FROM ID SEMICOLON
+                        | select_columns
+                        | limit_select_table
+                        | select_table_condition'''
+        if len(p) == 6:  
+            p[0] = ('select', p[4])
+        else:
+            p[0] = p[1]
 
+    def p_select_columns(self, p):
+        '''select_columns : SELECT comma_id FROM ID SEMICOLON'''
+        p[0] = ('select_columns', p[2], p[4])
+
+    def p_comma_id(self, p):
+        '''comma_id : ID COMMA comma_id
+                    | ID'''
+        if len(p) == 2:
+            p[0] = [p[1]]
+        else:
+            p[0] = [p[1]] + p[3]
+
+    def p_limit_select_table(self, p):
+        '''limit_select_table : SELECT STAR FROM ID LIMIT NUMBER SEMICOLON'''
+        p[0] = ('select_all_limit', p[4], p[6])
+
+    def p_select_table_condition(self, p):
+        '''select_table_condition : SELECT STAR FROM ID WHERE ID operator ID SEMICOLON
+                                | SELECT STAR FROM ID WHERE ID operator ID select_table_condition_and'''
+        if len(p) == 10:  
+            p[0] = ('select_where', p[4], (p[6], p[7], p[8]))
+        else:  
+            p[0] = ('select_where_and', p[4], (p[6], p[7], p[8]), p[9])
+
+    def p_select_table_condition_and(self, p):
+        '''select_table_condition_and : AND ID operator ID SEMICOLON
+                                        | AND ID operator ID select_table_condition_and'''
+        if p[5] == ';':
+            p[0] = [('AND', p[2], p[3], p[4])]
+        else:
+            p[0] = [('AND', p[2], p[3], p[4])] + p[5]
+
+    # --------- Comandos - Criação ---------
+
+    def p_create_table(self, p):
+        '''create_table : CREATE TABLE ID select_table
+                        | CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON
+                        | CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON'''
+        if len(p) == 6 and p[2] == 'TABLE' and p[4] == 'SELECT':
+            p[0] = ('create_select', p[3], p[5], p[7])  # ('create_select', new_table, columns, source_table)
+        elif len(p) == 6:
+            p[0] = ('create', p[3], p[4])
+        else:
+            p[0] = ('create', p[3], p[5], p[7], p[9])
     # --------- Erros ---------
 
     def p_error(self, p):
