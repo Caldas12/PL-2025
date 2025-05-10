@@ -26,7 +26,11 @@ class Parser:
 
     def p_statement(self, p):
         '''statement : import_table
-                    | export_table'''
+                    | export_table
+                    | discard_table
+                    | rename_table
+                    | print_table
+                    | select_table'''
         p[0] = p[1]
 
     def p_operator(self, p):
@@ -57,7 +61,7 @@ class Parser:
     
     def p_rename_table(self, p):
         '''rename_table : RENAME TABLE ID ID SEMICOLON'''
-        p[0] = ('rename', p[3], p[5])
+        p[0] = ('rename', p[3], p[4])
 
     def p_print_table(self, p):
         '''print_table : PRINT TABLE ID SEMICOLON'''
@@ -65,7 +69,9 @@ class Parser:
     
     # --------- Comandos - Queries ---------
 
-    
+    def p_select_table(self, p):
+        '''select_table : SELECT STAR FROM ID SEMICOLON'''
+        p[0] = ('select', p[2], p[4])
 
     # --------- Erros ---------
 

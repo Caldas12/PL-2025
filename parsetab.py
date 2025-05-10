@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'AND AS CALL COMMA CREATE DISCARD DO END EQUALS EXPORT FROM GREATER_EQUAL GREATER_THAN ID IMPORT JOIN LESS_EQUAL LESS_THAN LIMIT NOT_EQUAL NUMBER PRINT PROCEDURE RENAME SELECT SEMICOLON STAR STRING TABLE USING WHEREprogram : statement_liststatement_list : statement_list statement\n| statementstatement : import_table\n| export_tableoperator : EQUALS\n| NOT_EQUAL\n| LESS_THAN\n| GREATER_THAN\n| LESS_EQUAL\n| GREATER_EQUAL\n| COMMA\n| SEMICOLON\n| STARimport_table : IMPORT TABLE ID FROM STRING SEMICOLONexport_table : EXPORT TABLE ID AS STRING SEMICOLONdiscard_table : DISCARD TABLE ID SEMICOLONrename_table : RENAME TABLE ID ID SEMICOLONprint_table : PRINT TABLE ID SEMICOLON'
+_lr_signature = 'AND AS CALL COMMA CREATE DISCARD DO END EQUALS EXPORT FROM GREATER_EQUAL GREATER_THAN ID IMPORT JOIN LESS_EQUAL LESS_THAN LIMIT NOT_EQUAL NUMBER PRINT PROCEDURE RENAME SELECT SEMICOLON STAR STRING TABLE USING WHEREprogram : statement_liststatement_list : statement_list statement\n| statementstatement : import_table\n| export_table\n| discard_table\n| rename_table\n| print_table\n| select_tableoperator : EQUALS\n| NOT_EQUAL\n| LESS_THAN\n| GREATER_THAN\n| LESS_EQUAL\n| GREATER_EQUAL\n| COMMA\n| SEMICOLON\n| STARimport_table : IMPORT TABLE ID FROM STRING SEMICOLONexport_table : EXPORT TABLE ID AS STRING SEMICOLONdiscard_table : DISCARD TABLE ID SEMICOLONrename_table : RENAME TABLE ID ID SEMICOLONprint_table : PRINT TABLE ID SEMICOLONselect_table : SELECT STAR FROM ID SEMICOLON'
     
-_lr_action_items = {'IMPORT':([0,2,3,4,5,8,17,18,],[6,6,-3,-4,-5,-2,-15,-16,]),'EXPORT':([0,2,3,4,5,8,17,18,],[7,7,-3,-4,-5,-2,-15,-16,]),'$end':([1,2,3,4,5,8,17,18,],[0,-1,-3,-4,-5,-2,-15,-16,]),'TABLE':([6,7,],[9,10,]),'ID':([9,10,],[11,12,]),'FROM':([11,],[13,]),'AS':([12,],[14,]),'STRING':([13,14,],[15,16,]),'SEMICOLON':([15,16,],[17,18,]),}
+_lr_action_items = {'IMPORT':([0,2,3,4,5,6,7,8,9,16,31,33,37,38,39,40,],[10,10,-3,-4,-5,-6,-7,-8,-9,-2,-21,-23,-22,-24,-19,-20,]),'EXPORT':([0,2,3,4,5,6,7,8,9,16,31,33,37,38,39,40,],[11,11,-3,-4,-5,-6,-7,-8,-9,-2,-21,-23,-22,-24,-19,-20,]),'DISCARD':([0,2,3,4,5,6,7,8,9,16,31,33,37,38,39,40,],[12,12,-3,-4,-5,-6,-7,-8,-9,-2,-21,-23,-22,-24,-19,-20,]),'RENAME':([0,2,3,4,5,6,7,8,9,16,31,33,37,38,39,40,],[13,13,-3,-4,-5,-6,-7,-8,-9,-2,-21,-23,-22,-24,-19,-20,]),'PRINT':([0,2,3,4,5,6,7,8,9,16,31,33,37,38,39,40,],[14,14,-3,-4,-5,-6,-7,-8,-9,-2,-21,-23,-22,-24,-19,-20,]),'SELECT':([0,2,3,4,5,6,7,8,9,16,31,33,37,38,39,40,],[15,15,-3,-4,-5,-6,-7,-8,-9,-2,-21,-23,-22,-24,-19,-20,]),'$end':([1,2,3,4,5,6,7,8,9,16,31,33,37,38,39,40,],[0,-1,-3,-4,-5,-6,-7,-8,-9,-2,-21,-23,-22,-24,-19,-20,]),'TABLE':([10,11,12,13,14,],[17,18,19,20,21,]),'STAR':([15,],[22,]),'ID':([17,18,19,20,21,26,28,],[23,24,25,26,27,32,34,]),'FROM':([22,23,],[28,29,]),'AS':([24,],[30,]),'SEMICOLON':([25,27,32,34,35,36,],[31,33,37,38,39,40,]),'STRING':([29,30,],[35,36,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'statement_list':([0,],[2,]),'statement':([0,2,],[3,8,]),'import_table':([0,2,],[4,4,]),'export_table':([0,2,],[5,5,]),}
+_lr_goto_items = {'program':([0,],[1,]),'statement_list':([0,],[2,]),'statement':([0,2,],[3,16,]),'import_table':([0,2,],[4,4,]),'export_table':([0,2,],[5,5,]),'discard_table':([0,2,],[6,6,]),'rename_table':([0,2,],[7,7,]),'print_table':([0,2,],[8,8,]),'select_table':([0,2,],[9,9,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -32,18 +32,23 @@ _lr_productions = [
   ('statement_list -> statement','statement_list',1,'p_statement_list','parser.py',21),
   ('statement -> import_table','statement',1,'p_statement','parser.py',28),
   ('statement -> export_table','statement',1,'p_statement','parser.py',29),
-  ('operator -> EQUALS','operator',1,'p_operator','parser.py',33),
-  ('operator -> NOT_EQUAL','operator',1,'p_operator','parser.py',34),
-  ('operator -> LESS_THAN','operator',1,'p_operator','parser.py',35),
-  ('operator -> GREATER_THAN','operator',1,'p_operator','parser.py',36),
-  ('operator -> LESS_EQUAL','operator',1,'p_operator','parser.py',37),
-  ('operator -> GREATER_EQUAL','operator',1,'p_operator','parser.py',38),
-  ('operator -> COMMA','operator',1,'p_operator','parser.py',39),
-  ('operator -> SEMICOLON','operator',1,'p_operator','parser.py',40),
-  ('operator -> STAR','operator',1,'p_operator','parser.py',41),
-  ('import_table -> IMPORT TABLE ID FROM STRING SEMICOLON','import_table',6,'p_import_table','parser.py',47),
-  ('export_table -> EXPORT TABLE ID AS STRING SEMICOLON','export_table',6,'p_export_table','parser.py',51),
-  ('discard_table -> DISCARD TABLE ID SEMICOLON','discard_table',4,'p_discard_table','parser.py',55),
-  ('rename_table -> RENAME TABLE ID ID SEMICOLON','rename_table',5,'p_rename_table','parser.py',59),
-  ('print_table -> PRINT TABLE ID SEMICOLON','print_table',4,'p_print_table','parser.py',63),
+  ('statement -> discard_table','statement',1,'p_statement','parser.py',30),
+  ('statement -> rename_table','statement',1,'p_statement','parser.py',31),
+  ('statement -> print_table','statement',1,'p_statement','parser.py',32),
+  ('statement -> select_table','statement',1,'p_statement','parser.py',33),
+  ('operator -> EQUALS','operator',1,'p_operator','parser.py',37),
+  ('operator -> NOT_EQUAL','operator',1,'p_operator','parser.py',38),
+  ('operator -> LESS_THAN','operator',1,'p_operator','parser.py',39),
+  ('operator -> GREATER_THAN','operator',1,'p_operator','parser.py',40),
+  ('operator -> LESS_EQUAL','operator',1,'p_operator','parser.py',41),
+  ('operator -> GREATER_EQUAL','operator',1,'p_operator','parser.py',42),
+  ('operator -> COMMA','operator',1,'p_operator','parser.py',43),
+  ('operator -> SEMICOLON','operator',1,'p_operator','parser.py',44),
+  ('operator -> STAR','operator',1,'p_operator','parser.py',45),
+  ('import_table -> IMPORT TABLE ID FROM STRING SEMICOLON','import_table',6,'p_import_table','parser.py',51),
+  ('export_table -> EXPORT TABLE ID AS STRING SEMICOLON','export_table',6,'p_export_table','parser.py',55),
+  ('discard_table -> DISCARD TABLE ID SEMICOLON','discard_table',4,'p_discard_table','parser.py',59),
+  ('rename_table -> RENAME TABLE ID ID SEMICOLON','rename_table',5,'p_rename_table','parser.py',63),
+  ('print_table -> PRINT TABLE ID SEMICOLON','print_table',4,'p_print_table','parser.py',67),
+  ('select_table -> SELECT STAR FROM ID SEMICOLON','select_table',5,'p_select_table','parser.py',73),
 ]
