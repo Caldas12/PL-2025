@@ -1,2 +1,5 @@
 IMPORT TABLE importada FROM "examples/estacoes.csv";
-EXPORT TABLE importada AS "output/est.csv";
+RENAME TABLE importada doatask;
+PRINT TABLE doatask;
+EXPORT TABLE doatask AS "output/est.csv";
+DISCARD TABLE doatask;
