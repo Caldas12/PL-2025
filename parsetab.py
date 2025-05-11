@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'AND AS CALL COMMA CREATE DISCARD DO END EQUALS EXPORT FROM GREATER_EQUAL GREATER_THAN ID IMPORT JOIN LESS_EQUAL LESS_THAN LIMIT NOT_EQUAL NUMBER PRINT PROCEDURE RENAME SELECT SEMICOLON STAR STRING TABLE USING WHEREprogram : statement_liststatement_list : statement_list statement\n| statementstatement : import_table\n| export_table\n| discard_table\n| rename_table\n| print_table\n| select_table\n| create_tableoperator : EQUALS\n| NOT_EQUAL\n| LESS_THAN\n| GREATER_THAN\n| LESS_EQUAL\n| GREATER_EQUAL\n| COMMA\n| SEMICOLON\n| STARimport_table : IMPORT TABLE ID FROM STRING SEMICOLONexport_table : EXPORT TABLE ID AS STRING SEMICOLONdiscard_table : DISCARD TABLE ID SEMICOLONrename_table : RENAME TABLE ID ID SEMICOLONprint_table : PRINT TABLE ID SEMICOLONselect_table : SELECT STAR FROM ID SEMICOLON\n| select_columns\n| limit_select_table\n| select_table_conditionselect_columns : SELECT comma_id FROM ID SEMICOLONcomma_id : ID COMMA comma_id\n| IDlimit_select_table : SELECT STAR FROM ID LIMIT NUMBER SEMICOLONselect_table_condition : SELECT STAR FROM ID WHERE ID operator ID SEMICOLON\n| SELECT STAR FROM ID WHERE ID operator ID select_table_condition_andselect_table_condition_and : AND ID operator ID SEMICOLON\n| AND ID operator ID select_table_condition_andcreate_table : CREATE TABLE ID select_table\n| CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON\n| CREATE TABLE ID SELECT comma_id FROM ID SEMICOLONprocedure : PROCEDURE ID DO statement_list END SEMICOLON\n| PROCEDURE ID DO statement_list ENDcall_procedure : CALL ID SEMICOLON'
+_lr_signature = 'AND AS CALL COMMA CREATE DISCARD DO END EQUALS EXPORT FROM GREATER_EQUAL GREATER_THAN ID IMPORT JOIN LESS_EQUAL LESS_THAN LIMIT NOT_EQUAL NUMBER PRINT PROCEDURE RENAME SELECT SEMICOLON STAR STRING TABLE USING WHEREprogram : statement_liststatement_list : statement_list statement\n| statementstatement : import_table\n| export_table\n| discard_table\n| rename_table\n| print_table\n| select_table\n| create_table_select\n| create_table_join\n| create_table_from_select_columns\n| procedure\n| call_procedureoperator : EQUALS\n| NOT_EQUAL\n| LESS_THAN\n| GREATER_THAN\n| LESS_EQUAL\n| GREATER_EQUALimport_table : IMPORT TABLE ID FROM STRING SEMICOLONexport_table : EXPORT TABLE ID AS STRING SEMICOLONdiscard_table : DISCARD TABLE ID SEMICOLONrename_table : RENAME TABLE ID ID SEMICOLONprint_table : PRINT TABLE ID SEMICOLONselect_table : SELECT STAR FROM ID SEMICOLON\n| select_columns\n| select_where\n| select_where_and\n| select_limitselect_columns : SELECT comma_id FROM ID SEMICOLONselect_where : SELECT STAR FROM ID WHERE ID operator ID SEMICOLONselect_where_and : SELECT STAR FROM ID WHERE ID operator ID select_condition_andselect_condition_and : AND ID operator ID SEMICOLON\n| AND ID operator ID select_condition_andselect_limit : SELECT STAR FROM ID LIMIT NUMBER SEMICOLONcomma_id : ID COMMA comma_id\n| IDcreate_table_select : CREATE TABLE ID select_tablecreate_table_join : CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLONcreate_table_from_select_columns : CREATE TABLE ID SELECT comma_id FROM ID SEMICOLONprocedure : PROCEDURE ID DO statement_list END SEMICOLONcall_procedure : CALL ID SEMICOLON'
     
-_lr_action_items = {'IMPORT':([0,2,3,4,5,6,7,8,9,10,17,18,19,21,42,44,48,53,54,57,60,61,66,81,82,83,87,90,91,],[11,11,-3,-4,-5,-6,-7,-8,-9,-10,-26,-27,-28,-2,-22,-24,-37,-23,-25,-29,-20,-21,-32,-29,-33,-34,-38,-35,-36,]),'EXPORT':([0,2,3,4,5,6,7,8,9,10,17,18,19,21,42,44,48,53,54,57,60,61,66,81,82,83,87,90,91,],[12,12,-3,-4,-5,-6,-7,-8,-9,-10,-26,-27,-28,-2,-22,-24,-37,-23,-25,-29,-20,-21,-32,-29,-33,-34,-38,-35,-36,]),'DISCARD':([0,2,3,4,5,6,7,8,9,10,17,18,19,21,42,44,48,53,54,57,60,61,66,81,82,83,87,90,91,],[13,13,-3,-4,-5,-6,-7,-8,-9,-10,-26,-27,-28,-2,-22,-24,-37,-23,-25,-29,-20,-21,-32,-29,-33,-34,-38,-35,-36,]),'RENAME':([0,2,3,4,5,6,7,8,9,10,17,18,19,21,42,44,48,53,54,57,60,61,66,81,82,83,87,90,91,],[14,14,-3,-4,-5,-6,-7,-8,-9,-10,-26,-27,-28,-2,-22,-24,-37,-23,-25,-29,-20,-21,-32,-29,-33,-34,-38,-35,-36,]),'PRINT':([0,2,3,4,5,6,7,8,9,10,17,18,19,21,42,44,48,53,54,57,60,61,66,81,82,83,87,90,91,],[15,15,-3,-4,-5,-6,-7,-8,-9,-10,-26,-27,-28,-2,-22,-24,-37,-23,-25,-29,-20,-21,-32,-29,-33,-34,-38,-35,-36,]),'SELECT':([0,2,3,4,5,6,7,8,9,10,17,18,19,21,39,42,44,48,53,54,57,60,61,66,81,82,83,87,90,91,],[16,16,-3,-4,-5,-6,-7,-8,-9,-10,-26,-27,-28,-2,50,-22,-24,-37,-23,-25,-29,-20,-21,-32,-29,-33,-34,-38,-35,-36,]),'CREATE':([0,2,3,4,5,6,7,8,9,10,17,18,19,21,42,44,48,53,54,57,60,61,66,81,82,83,87,90,91,],[20,20,-3,-4,-5,-6,-7,-8,-9,-10,-26,-27,-28,-2,-22,-24,-37,-23,-25,-29,-20,-21,-32,-29,-33,-34,-38,-35,-36,]),'$end':([1,2,3,4,5,6,7,8,9,10,17,18,19,21,42,44,48,53,54,57,60,61,66,81,82,83,87,90,91,],[0,-1,-3,-4,-5,-6,-7,-8,-9,-10,-26,-27,-28,-2,-22,-24,-37,-23,-25,-29,-20,-21,-32,-29,-33,-34,-38,-35,-36,]),'TABLE':([11,12,13,14,15,20,],[22,23,24,25,26,30,]),'STAR':([16,50,63,86,],[27,27,67,67,]),'ID':([16,22,23,24,25,26,30,34,36,37,38,49,50,56,64,65,67,68,69,70,71,72,73,74,75,76,80,84,88,],[28,31,32,33,34,35,39,43,45,28,47,58,28,63,77,78,-19,79,-18,-11,-12,-13,-14,-15,-16,-17,85,86,89,]),'FROM':([27,28,29,31,39,46,59,],[36,-31,38,40,49,-30,65,]),'COMMA':([28,63,86,],[37,76,76,]),'AS':([32,],[41,]),'SEMICOLON':([33,35,43,45,47,51,52,62,63,78,79,85,86,89,],[42,44,53,54,57,60,61,66,69,81,82,87,69,90,]),'STRING':([40,41,],[51,52,]),'LIMIT':([45,],[55,]),'WHERE':([45,],[56,]),'NUMBER':([55,],[62,]),'JOIN':([58,],[64,]),'EQUALS':([63,86,],[70,70,]),'NOT_EQUAL':([63,86,],[71,71,]),'LESS_THAN':([63,86,],[72,72,]),'GREATER_THAN':([63,86,],[73,73,]),'LESS_EQUAL':([63,86,],[74,74,]),'GREATER_EQUAL':([63,86,],[75,75,]),'USING':([77,],[80,]),'AND':([79,89,],[84,84,]),}
+_lr_action_items = {'IMPORT':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,21,22,23,24,28,49,50,53,55,59,62,65,66,69,73,74,79,87,92,93,94,98,101,102,],[15,15,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-27,-28,-29,-30,-2,15,-43,-23,-25,-39,15,-24,-26,-31,-21,-22,-42,-36,-31,-32,-33,-40,-34,-35,]),'EXPORT':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,21,22,23,24,28,49,50,53,55,59,62,65,66,69,73,74,79,87,92,93,94,98,101,102,],[16,16,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-27,-28,-29,-30,-2,16,-43,-23,-25,-39,16,-24,-26,-31,-21,-22,-42,-36,-31,-32,-33,-40,-34,-35,]),'DISCARD':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,21,22,23,24,28,49,50,53,55,59,62,65,66,69,73,74,79,87,92,93,94,98,101,102,],[17,17,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-27,-28,-29,-30,-2,17,-43,-23,-25,-39,17,-24,-26,-31,-21,-22,-42,-36,-31,-32,-33,-40,-34,-35,]),'RENAME':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,21,22,23,24,28,49,50,53,55,59,62,65,66,69,73,74,79,87,92,93,94,98,101,102,],[18,18,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-27,-28,-29,-30,-2,18,-43,-23,-25,-39,18,-24,-26,-31,-21,-22,-42,-36,-31,-32,-33,-40,-34,-35,]),'PRINT':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,21,22,23,24,28,49,50,53,55,59,62,65,66,69,73,74,79,87,92,93,94,98,101,102,],[19,19,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-27,-28,-29,-30,-2,19,-43,-23,-25,-39,19,-24,-26,-31,-21,-22,-42,-36,-31,-32,-33,-40,-34,-35,]),'SELECT':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,21,22,23,24,28,48,49,50,53,55,59,62,65,66,69,73,74,79,87,92,93,94,98,101,102,],[20,20,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-27,-28,-29,-30,-2,61,20,-43,-23,-25,-39,20,-24,-26,-31,-21,-22,-42,-36,-31,-32,-33,-40,-34,-35,]),'CREATE':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,21,22,23,24,28,49,50,53,55,59,62,65,66,69,73,74,79,87,92,93,94,98,101,102,],[25,25,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-27,-28,-29,-30,-2,25,-43,-23,-25,-39,25,-24,-26,-31,-21,-22,-42,-36,-31,-32,-33,-40,-34,-35,]),'PROCEDURE':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,21,22,23,24,28,49,50,53,55,59,62,65,66,69,73,74,79,87,92,93,94,98,101,102,],[26,26,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-27,-28,-29,-30,-2,26,-43,-23,-25,-39,26,-24,-26,-31,-21,-22,-42,-36,-31,-32,-33,-40,-34,-35,]),'CALL':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,21,22,23,24,28,49,50,53,55,59,62,65,66,69,73,74,79,87,92,93,94,98,101,102,],[27,27,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-27,-28,-29,-30,-2,27,-43,-23,-25,-39,27,-24,-26,-31,-21,-22,-42,-36,-31,-32,-33,-40,-34,-35,]),'$end':([1,2,3,4,5,6,7,8,9,10,11,12,13,14,21,22,23,24,28,50,53,55,59,65,66,69,73,74,79,87,92,93,94,98,101,102,],[0,-1,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-27,-28,-29,-30,-2,-43,-23,-25,-39,-24,-26,-31,-21,-22,-42,-36,-31,-32,-33,-40,-34,-35,]),'END':([3,4,5,6,7,8,9,10,11,12,13,14,21,22,23,24,28,50,53,55,59,62,65,66,69,73,74,79,87,92,93,94,98,101,102,],[-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-27,-28,-29,-30,-2,-43,-23,-25,-39,72,-24,-26,-31,-21,-22,-42,-36,-31,-32,-33,-40,-34,-35,]),'TABLE':([15,16,17,18,19,25,],[29,30,31,32,33,37,]),'STAR':([20,61,],[34,34,]),'ID':([20,26,27,29,30,31,32,33,37,43,45,46,47,60,61,67,77,78,80,81,82,83,84,85,86,91,95,99,],[35,38,39,40,41,42,43,44,48,54,56,35,58,70,35,75,88,89,90,-15,-16,-17,-18,-19,-20,96,97,100,]),'FROM':([34,35,36,40,48,57,71,],[45,-38,47,51,60,-37,78,]),'COMMA':([35,],[46,]),'DO':([38,],[49,]),'SEMICOLON':([39,42,44,54,56,58,63,64,72,76,89,90,96,100,],[50,53,55,65,66,69,73,74,79,87,92,93,98,101,]),'AS':([41,],[52,]),'STRING':([51,52,],[63,64,]),'WHERE':([56,],[67,]),'LIMIT':([56,],[68,]),'NUMBER':([68,],[76,]),'JOIN':([70,],[77,]),'EQUALS':([75,97,],[81,81,]),'NOT_EQUAL':([75,97,],[82,82,]),'LESS_THAN':([75,97,],[83,83,]),'GREATER_THAN':([75,97,],[84,84,]),'LESS_EQUAL':([75,97,],[85,85,]),'GREATER_EQUAL':([75,97,],[86,86,]),'USING':([88,],[91,]),'AND':([90,100,],[95,95,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'statement_list':([0,],[2,]),'statement':([0,2,],[3,21,]),'import_table':([0,2,],[4,4,]),'export_table':([0,2,],[5,5,]),'discard_table':([0,2,],[6,6,]),'rename_table':([0,2,],[7,7,]),'print_table':([0,2,],[8,8,]),'select_table':([0,2,39,],[9,9,48,]),'create_table':([0,2,],[10,10,]),'select_columns':([0,2,39,],[17,17,17,]),'limit_select_table':([0,2,39,],[18,18,18,]),'select_table_condition':([0,2,39,],[19,19,19,]),'comma_id':([16,37,50,],[29,46,59,]),'operator':([63,86,],[68,88,]),'select_table_condition_and':([79,89,],[83,91,]),}
+_lr_goto_items = {'program':([0,],[1,]),'statement_list':([0,49,],[2,62,]),'statement':([0,2,49,62,],[3,28,3,28,]),'import_table':([0,2,49,62,],[4,4,4,4,]),'export_table':([0,2,49,62,],[5,5,5,5,]),'discard_table':([0,2,49,62,],[6,6,6,6,]),'rename_table':([0,2,49,62,],[7,7,7,7,]),'print_table':([0,2,49,62,],[8,8,8,8,]),'select_table':([0,2,48,49,62,],[9,9,59,9,9,]),'create_table_select':([0,2,49,62,],[10,10,10,10,]),'create_table_join':([0,2,49,62,],[11,11,11,11,]),'create_table_from_select_columns':([0,2,49,62,],[12,12,12,12,]),'procedure':([0,2,49,62,],[13,13,13,13,]),'call_procedure':([0,2,49,62,],[14,14,14,14,]),'select_columns':([0,2,48,49,62,],[21,21,21,21,21,]),'select_where':([0,2,48,49,62,],[22,22,22,22,22,]),'select_where_and':([0,2,48,49,62,],[23,23,23,23,23,]),'select_limit':([0,2,48,49,62,],[24,24,24,24,24,]),'comma_id':([20,46,61,],[36,57,71,]),'operator':([75,97,],[80,99,]),'select_condition_and':([90,100,],[94,102,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,46 +27,47 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> statement_list','program',1,'p_program','parser.py',16),
-  ('statement_list -> statement_list statement','statement_list',2,'p_statement_list','parser.py',20),
-  ('statement_list -> statement','statement_list',1,'p_statement_list','parser.py',21),
-  ('statement -> import_table','statement',1,'p_statement','parser.py',28),
-  ('statement -> export_table','statement',1,'p_statement','parser.py',29),
-  ('statement -> discard_table','statement',1,'p_statement','parser.py',30),
-  ('statement -> rename_table','statement',1,'p_statement','parser.py',31),
-  ('statement -> print_table','statement',1,'p_statement','parser.py',32),
-  ('statement -> select_table','statement',1,'p_statement','parser.py',33),
-  ('statement -> create_table','statement',1,'p_statement','parser.py',34),
-  ('operator -> EQUALS','operator',1,'p_operator','parser.py',38),
-  ('operator -> NOT_EQUAL','operator',1,'p_operator','parser.py',39),
-  ('operator -> LESS_THAN','operator',1,'p_operator','parser.py',40),
-  ('operator -> GREATER_THAN','operator',1,'p_operator','parser.py',41),
-  ('operator -> LESS_EQUAL','operator',1,'p_operator','parser.py',42),
-  ('operator -> GREATER_EQUAL','operator',1,'p_operator','parser.py',43),
-  ('operator -> COMMA','operator',1,'p_operator','parser.py',44),
-  ('operator -> SEMICOLON','operator',1,'p_operator','parser.py',45),
-  ('operator -> STAR','operator',1,'p_operator','parser.py',46),
-  ('import_table -> IMPORT TABLE ID FROM STRING SEMICOLON','import_table',6,'p_import_table','parser.py',52),
-  ('export_table -> EXPORT TABLE ID AS STRING SEMICOLON','export_table',6,'p_export_table','parser.py',56),
-  ('discard_table -> DISCARD TABLE ID SEMICOLON','discard_table',4,'p_discard_table','parser.py',60),
-  ('rename_table -> RENAME TABLE ID ID SEMICOLON','rename_table',5,'p_rename_table','parser.py',64),
-  ('print_table -> PRINT TABLE ID SEMICOLON','print_table',4,'p_print_table','parser.py',68),
-  ('select_table -> SELECT STAR FROM ID SEMICOLON','select_table',5,'p_select_table','parser.py',74),
-  ('select_table -> select_columns','select_table',1,'p_select_table','parser.py',75),
-  ('select_table -> limit_select_table','select_table',1,'p_select_table','parser.py',76),
-  ('select_table -> select_table_condition','select_table',1,'p_select_table','parser.py',77),
-  ('select_columns -> SELECT comma_id FROM ID SEMICOLON','select_columns',5,'p_select_columns','parser.py',84),
-  ('comma_id -> ID COMMA comma_id','comma_id',3,'p_comma_id','parser.py',88),
-  ('comma_id -> ID','comma_id',1,'p_comma_id','parser.py',89),
-  ('limit_select_table -> SELECT STAR FROM ID LIMIT NUMBER SEMICOLON','limit_select_table',7,'p_limit_select_table','parser.py',96),
-  ('select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID SEMICOLON','select_table_condition',9,'p_select_table_condition','parser.py',100),
-  ('select_table_condition -> SELECT STAR FROM ID WHERE ID operator ID select_table_condition_and','select_table_condition',9,'p_select_table_condition','parser.py',101),
-  ('select_table_condition_and -> AND ID operator ID SEMICOLON','select_table_condition_and',5,'p_select_table_condition_and','parser.py',108),
-  ('select_table_condition_and -> AND ID operator ID select_table_condition_and','select_table_condition_and',5,'p_select_table_condition_and','parser.py',109),
-  ('create_table -> CREATE TABLE ID select_table','create_table',4,'p_create_table','parser.py',118),
-  ('create_table -> CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON','create_table',10,'p_create_table','parser.py',119),
-  ('create_table -> CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON','create_table',8,'p_create_table','parser.py',120),
-  ('procedure -> PROCEDURE ID DO statement_list END SEMICOLON','procedure',6,'p_procedure','parser.py',131),
-  ('procedure -> PROCEDURE ID DO statement_list END','procedure',5,'p_procedure','parser.py',132),
-  ('call_procedure -> CALL ID SEMICOLON','call_procedure',3,'p_call_procedure','parser.py',139),
+  ('program -> statement_list','program',1,'p_program','parser.py',12),
+  ('statement_list -> statement_list statement','statement_list',2,'p_statement_list','parser.py',16),
+  ('statement_list -> statement','statement_list',1,'p_statement_list','parser.py',17),
+  ('statement -> import_table','statement',1,'p_statement','parser.py',24),
+  ('statement -> export_table','statement',1,'p_statement','parser.py',25),
+  ('statement -> discard_table','statement',1,'p_statement','parser.py',26),
+  ('statement -> rename_table','statement',1,'p_statement','parser.py',27),
+  ('statement -> print_table','statement',1,'p_statement','parser.py',28),
+  ('statement -> select_table','statement',1,'p_statement','parser.py',29),
+  ('statement -> create_table_select','statement',1,'p_statement','parser.py',30),
+  ('statement -> create_table_join','statement',1,'p_statement','parser.py',31),
+  ('statement -> create_table_from_select_columns','statement',1,'p_statement','parser.py',32),
+  ('statement -> procedure','statement',1,'p_statement','parser.py',33),
+  ('statement -> call_procedure','statement',1,'p_statement','parser.py',34),
+  ('operator -> EQUALS','operator',1,'p_operator','parser.py',39),
+  ('operator -> NOT_EQUAL','operator',1,'p_operator','parser.py',40),
+  ('operator -> LESS_THAN','operator',1,'p_operator','parser.py',41),
+  ('operator -> GREATER_THAN','operator',1,'p_operator','parser.py',42),
+  ('operator -> LESS_EQUAL','operator',1,'p_operator','parser.py',43),
+  ('operator -> GREATER_EQUAL','operator',1,'p_operator','parser.py',44),
+  ('import_table -> IMPORT TABLE ID FROM STRING SEMICOLON','import_table',6,'p_import_table','parser.py',49),
+  ('export_table -> EXPORT TABLE ID AS STRING SEMICOLON','export_table',6,'p_export_table','parser.py',53),
+  ('discard_table -> DISCARD TABLE ID SEMICOLON','discard_table',4,'p_discard_table','parser.py',57),
+  ('rename_table -> RENAME TABLE ID ID SEMICOLON','rename_table',5,'p_rename_table','parser.py',61),
+  ('print_table -> PRINT TABLE ID SEMICOLON','print_table',4,'p_print_table','parser.py',65),
+  ('select_table -> SELECT STAR FROM ID SEMICOLON','select_table',5,'p_select_table','parser.py',70),
+  ('select_table -> select_columns','select_table',1,'p_select_table','parser.py',71),
+  ('select_table -> select_where','select_table',1,'p_select_table','parser.py',72),
+  ('select_table -> select_where_and','select_table',1,'p_select_table','parser.py',73),
+  ('select_table -> select_limit','select_table',1,'p_select_table','parser.py',74),
+  ('select_columns -> SELECT comma_id FROM ID SEMICOLON','select_columns',5,'p_select_columns','parser.py',78),
+  ('select_where -> SELECT STAR FROM ID WHERE ID operator ID SEMICOLON','select_where',9,'p_select_where','parser.py',82),
+  ('select_where_and -> SELECT STAR FROM ID WHERE ID operator ID select_condition_and','select_where_and',9,'p_select_where_and','parser.py',86),
+  ('select_condition_and -> AND ID operator ID SEMICOLON','select_condition_and',5,'p_select_condition_and','parser.py',90),
+  ('select_condition_and -> AND ID operator ID select_condition_and','select_condition_and',5,'p_select_condition_and','parser.py',91),
+  ('select_limit -> SELECT STAR FROM ID LIMIT NUMBER SEMICOLON','select_limit',7,'p_select_limit','parser.py',98),
+  ('comma_id -> ID COMMA comma_id','comma_id',3,'p_comma_id','parser.py',102),
+  ('comma_id -> ID','comma_id',1,'p_comma_id','parser.py',103),
+  ('create_table_select -> CREATE TABLE ID select_table','create_table_select',4,'p_create_table_select','parser.py',111),
+  ('create_table_join -> CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON','create_table_join',10,'p_create_table_join','parser.py',115),
+  ('create_table_from_select_columns -> CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON','create_table_from_select_columns',8,'p_create_table_from_select_columns','parser.py',119),
+  ('procedure -> PROCEDURE ID DO statement_list END SEMICOLON','procedure',6,'p_procedure','parser.py',124),
+  ('call_procedure -> CALL ID SEMICOLON','call_procedure',3,'p_call_procedure','parser.py',128),
 ]

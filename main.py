@@ -24,3 +24,4 @@ class main:
                 resultado = interpreter.start(expr)
             except Exception as e:
                 print(e)
+
