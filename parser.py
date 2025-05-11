@@ -31,7 +31,9 @@ class Parser:
                     | rename_table
                     | print_table
                     | select_table
-                    | create_table'''
+                    | create_table
+                    |procedure_declaration
+                    |call_statement'''
         p[0] = p[1]
 
     def p_operator(self, p):
@@ -124,6 +126,8 @@ class Parser:
             p[0] = ('create', p[3], p[4])
         else:
             p[0] = ('create', p[3], p[5], p[7], p[9])
+
+            
     # --------- Erros ---------
 
     def p_error(self, p):
