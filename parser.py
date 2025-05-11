@@ -124,6 +124,22 @@ class Parser:
             p[0] = ('create', p[3], p[4])
         else:
             p[0] = ('create', p[3], p[5], p[7], p[9])
+    
+    # --------- Comandos - Procedimentos ---------
+    
+    def p_procedure(self, p):
+        '''procedure : PROCEDURE ID DO statement_list END SEMICOLON
+                    | PROCEDURE ID DO statement_list END'''
+        if len(p) == 7:
+            p[0] = ('procedure', p[2], p[4])
+        else:
+            p[0] = ('procedure', p[2], p[4], None)
+    
+    def p_call_procedure(self, p):
+        '''call_procedure : CALL ID SEMICOLON'''
+        p[0] = ('call', p[2])
+
+
     # --------- Erros ---------
 
     def p_error(self, p):

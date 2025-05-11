@@ -1,12 +1,5 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    CALL
-    DO
-    END
-    PROCEDURE
-
 Grammar
 
 Rule 0     S' -> program
@@ -49,23 +42,26 @@ Rule 36    select_table_condition_and -> AND ID operator ID select_table_conditi
 Rule 37    create_table -> CREATE TABLE ID select_table
 Rule 38    create_table -> CREATE TABLE ID FROM ID JOIN ID USING ID SEMICOLON
 Rule 39    create_table -> CREATE TABLE ID SELECT comma_id FROM ID SEMICOLON
+Rule 40    procedure -> PROCEDURE ID DO statement_list END SEMICOLON
+Rule 41    procedure -> PROCEDURE ID DO statement_list END
+Rule 42    call_procedure -> CALL ID SEMICOLON
 
 Terminals, with rules where they appear
 
 AND                  : 35 36
 AS                   : 21
-CALL                 : 
+CALL                 : 42
 COMMA                : 17 30
 CREATE               : 37 38 39
 DISCARD              : 22
-DO                   : 
-END                  : 
+DO                   : 40 41
+END                  : 40 41
 EQUALS               : 11
 EXPORT               : 21
 FROM                 : 20 25 29 32 33 34 38 39
 GREATER_EQUAL        : 16
 GREATER_THAN         : 14
-ID                   : 20 21 22 23 23 24 25 29 30 31 32 33 33 33 34 34 34 35 35 36 36 37 38 38 38 38 39 39
+ID                   : 20 21 22 23 23 24 25 29 30 31 32 33 33 33 34 34 34 35 35 36 36 37 38 38 38 38 39 39 40 41 42
 IMPORT               : 20
 JOIN                 : 38
 LESS_EQUAL           : 15
@@ -74,10 +70,10 @@ LIMIT                : 32
 NOT_EQUAL            : 12
 NUMBER               : 32
 PRINT                : 24
-PROCEDURE            : 
+PROCEDURE            : 40 41
 RENAME               : 23
 SELECT               : 25 29 32 33 34 39
-SEMICOLON            : 18 20 21 22 23 24 25 29 32 33 35 38 39
+SEMICOLON            : 18 20 21 22 23 24 25 29 32 33 35 38 39 40 42
 STAR                 : 19 25 32 33 34
 STRING               : 20 21
 TABLE                : 20 21 22 23 24 37 38 39
@@ -87,6 +83,7 @@ error                :
 
 Nonterminals, with rules where they appear
 
+call_procedure       : 
 comma_id             : 29 30 39
 create_table         : 10
 discard_table        : 6
@@ -95,6 +92,7 @@ import_table         : 4
 limit_select_table   : 27
 operator             : 33 34 35 36
 print_table          : 8
+procedure            : 
 program              : 0
 rename_table         : 7
 select_columns       : 26
@@ -102,7 +100,7 @@ select_table         : 9 37
 select_table_condition : 28
 select_table_condition_and : 34 36
 statement            : 2 3
-statement_list       : 1 2
+statement_list       : 1 2 40 41
 
 Parsing method: LALR
 
