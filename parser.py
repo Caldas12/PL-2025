@@ -78,32 +78,41 @@ class Parser:
                         | select_columns
                         | select_where
                         | select_where_and
-                        | select_limit'''
-        p[0] = p[1] if isinstance(p[1], tuple) else ('select', p[4])
+                        | select_limit
+                        | select_limit_columns'''
+        p[0] = p[1]
 
     def p_select_columns(self, p):
         'select_columns : SELECT comma_id FROM ID SEMICOLON'
         p[0] = ('select_columns', p[2], p[4])
 
     def p_select_where(self, p):
-        'select_where : SELECT STAR FROM ID WHERE ID operator ID SEMICOLON'
-        p[0] = ('select_where', p[4], (p[6], p[7], p[8]))
+        'select_where : SELECT STAR FROM ID WHERE condition SEMICOLON'
+        p[0] = ('select_where', p[4], [p[6]])
 
     def p_select_where_and(self, p):
-        'select_where_and : SELECT STAR FROM ID WHERE ID operator ID select_and'
-        p[0] = ('select_where_and', p[4], (p[6], p[7], p[8]), p[9])
-
-    def p_select_and(self, p):
-        '''select_and : AND ID operator ID SEMICOLON
-                                | AND ID operator ID select_and'''
-        if p[5] == ';':
-            p[0] = [('AND', p[2], p[3], p[4])]
-        else:
-            p[0] = [('AND', p[2], p[3], p[4])] + p[5]
+        'select_where_and : SELECT STAR FROM ID WHERE condition and_list SEMICOLON'
+        p[0] = ('select_where_and', p[4], [p[6]] + p[7])
 
     def p_select_limit(self, p):
         'select_limit : SELECT STAR FROM ID LIMIT NUMBER SEMICOLON'
         p[0] = ('select_limit', p[4], p[6])
+
+    def p_select_limit_columns(self, p):
+        'select_limit_columns : SELECT comma_id FROM ID LIMIT NUMBER SEMICOLON'
+        p[0] = ('select_limit_columns', p[2], p[4], p[6])
+
+    def p_condition(self, p):
+        'condition : ID operator ID'
+        p[0] = (p[1], p[2], p[3])
+
+    def p_and_list(self, p):
+        '''and_list : AND condition
+                    | and_list AND condition'''
+        if len(p) == 3:
+            p[0] = [p[2]]
+        else:
+            p[0] = p[1] + [p[3]]
 
     def p_comma_id(self, p):
         '''comma_id : ID COMMA comma_id

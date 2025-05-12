@@ -54,7 +54,6 @@ class Interpreter:
                     header = row
                     continue
                 data.append(row)
-            print(header, data)
             return {"header": header, "data": data}
 
     def write_file(self, table_name, file_path):

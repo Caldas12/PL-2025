@@ -5,10 +5,6 @@ class main:
 
     interpreter = Interpreter()
 
-    with open("examples/entrada.fca", "r") as file:
-        contents = file.read()
-        interpreter.start(contents)
-
     if len(sys.argv) == 2:
             try:
                 with open(sys.argv[1], "r") as file:
