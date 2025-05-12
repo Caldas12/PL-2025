@@ -3,3 +3,11 @@ RENAME TABLE importada doatask;
 PRINT TABLE doatask;
 EXPORT TABLE doatask AS "output/est.csv";
 DISCARD TABLE doatask;
+-- só WHERE
+SELECT * FROM T WHERE x > 10;
+-- várias condições
+SELECT * FROM T WHERE x = 1 AND y <> 2 AND z <= 5;
+-- colunas + LIMIT
+SELECT a, b, c FROM T LIMIT 3;
+-- combinação WHERE + AND + LIMIT
+SELECT a, b FROM T WHERE x = 0 AND y > 5 LIMIT 2;

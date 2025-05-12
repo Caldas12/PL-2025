@@ -165,6 +165,9 @@ class Interpreter:
         elif kind == 'select_limit':
             _, table, limit = statement
             return self.select_table(table, '*', None, limit)
+        elif kind == 'select_limit_columns':
+            _, cols, table, limit = statement
+            return self.select_table(table, cols, None, limit)
 
     def print_result(self, result):
         print(result["header"])

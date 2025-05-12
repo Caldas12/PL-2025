@@ -1,7 +1,7 @@
 from parser import Parser
 import csv
 
-class Interpreter:
+class Interpreter2:
     def __init__(self):
         self.parser = Parser()
         self.dictionary = {}
