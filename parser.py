@@ -94,7 +94,7 @@ class Parser:
         p[0] = ('select_where_and', p[4], (p[6], p[7], p[8]), p[9])
 
     def p_select_and(self, p):
-        '''select_condition_and : AND ID operator ID SEMICOLON
+        '''select_and : AND ID operator ID SEMICOLON
                                 | AND ID operator ID select_and'''
         if p[5] == ';':
             p[0] = [('AND', p[2], p[3], p[4])]
