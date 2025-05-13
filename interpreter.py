@@ -24,7 +24,7 @@ class Interpreter:
                 self.rename_table(statement[1], statement[2])
             elif stmt == 'print':
                 self.print_table(statement[1])
-            elif stmt in ('select', 'select_columns', 'select_where', 'select_where_and', 'select_limit'):
+            elif stmt in ('select_table', 'select_columns', 'select_where', 'select_where_and', 'select_limit'):
                 result = self.execute_select(statement)
                 self.print_result(result)
             elif stmt == 'create_from_query':
@@ -149,7 +149,7 @@ class Interpreter:
 
     def execute_select(self, statement):
         kind = statement[0]
-        if kind == 'select':
+        if kind == 'select:_table':
             _, table = statement
             return self.select_table(table, '*')
         elif kind == 'select_columns':
