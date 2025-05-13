@@ -80,7 +80,10 @@ class Parser:
                         | select_where_and
                         | select_limit
                         | select_limit_columns'''
-        p[0] = p[1]
+        if len(p) == 2:
+            p[0] = p[1]
+        else:
+            p[0] = ('select_table', p[2], p[4])
 
     def p_select_columns(self, p):
         'select_columns : SELECT comma_id FROM ID SEMICOLON'
