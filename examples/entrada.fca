@@ -1,2 +1,3 @@
-IMPORT TABLE importada FROM "examples/estacoes.csv";
-SELECT * FROM importada;
+IMPORT TABLE observacoes FROM "examples/observacoes.csv";
+PRINT TABLE observacoes;
+SELECT * FROM observacoes;
