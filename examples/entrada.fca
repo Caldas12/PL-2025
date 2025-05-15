@@ -1,3 +1,20 @@
 IMPORT TABLE observacoes FROM "examples/observacoes.csv";
-PRINT TABLE observacoes;
+IMPORT TABLE estacoes FROM "examples/estacoes.csv";
+
 SELECT * FROM observacoes;
+
+SELECT Temperatura FROM observacoes;
+
+SELECT * FROM observacoes WHERE Temperatura > 15;
+
+SELECT * FROM observacoes WHERE Temperatura > 15 AND Temperatura < 20;
+
+SELECT * FROM observacoes LIMIT 3;
+
+SELECT Temperatura FROM observacoes LIMIT 2;
+
+CREATE TABLE Temp SELECT Temperatura FROM observacoes LIMIT 2;
+
+PRINT TABLE Temp;
+
+CREATE TABLE Junto FROM observacoes JOIN estacoes USING Id;

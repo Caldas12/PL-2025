@@ -24,7 +24,7 @@ class Interpreter:
                 self.rename_table(statement[1], statement[2])
             elif stmt == 'print':
                 self.print_table(statement[1])
-            elif stmt in ('select_table', 'select_columns', 'select_where', 'select_where_and', 'select_limit'):
+            elif stmt in ('select_table', 'select_columns', 'select_where', 'select_where_and', 'select_limit', 'select_limit_columns'):
                 result = self.execute_select(statement)
                 self.print_result(result)
             elif stmt == 'create_from_query':
@@ -149,25 +149,34 @@ class Interpreter:
 
     def execute_select(self, statement):
         kind = statement[0]
-        if kind == 'select:_table':
-            _, table = statement
-            return self.select_table(table, '*')
+
+        if kind == 'select_table':
+            _, cols, table = statement
+            return self.select_table(table, cols)
+        
         elif kind == 'select_columns':
             _, cols, table = statement
             return self.select_table(table, cols)
+
         elif kind == 'select_where':
             _, table, cond = statement
-            return self.select_table(table, '*', [cond])
+            return self.select_table(table, '*', cond)
+
         elif kind == 'select_where_and':
-            _, table, cond, conds = statement
-            return self.select_table(table, '*', [cond] + conds)
+            _, table, cond = statement
+            return self.select_table(table, '*', cond)
+        
         elif kind == 'select_limit':
             _, table, limit = statement
             return self.select_table(table, '*', None, limit)
+        
         elif kind == 'select_limit_columns':
             _, cols, table, limit = statement
             return self.select_table(table, cols, None, limit)
-
+        
+        else:
+            raise ValueError(f"Unknown select kind: {kind}")
+        
     def print_result(self, result):
         print(result["header"])
         for row in result["data"]:

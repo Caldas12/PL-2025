@@ -106,8 +106,14 @@ class Parser:
         p[0] = ('select_limit_columns', p[2], p[4], p[6])
 
     def p_condition(self, p):
-        'condition : ID operator ID'
+        'condition : ID operator value'
         p[0] = (p[1], p[2], p[3])
+    
+    def p_value(self, p):
+        '''value : ID
+                 | STRING
+                 | NUMBER'''
+        p[0] = p[1]
 
     def p_and_list(self, p):
         '''and_list : AND condition
