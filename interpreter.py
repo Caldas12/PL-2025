@@ -2,12 +2,28 @@ from parser import Parser
 import csv
 
 class Interpreter:
+    """
+    Interpretador para uma linguagem simples de consultas baseada em tabelas.
+
+    Esta classe fornece métodos para importar, exportar, manipular e consultar dados tabulares armazenados em ficheiros CSV.
+    Suporta operações básicas semelhantes a SQL, como SELECT, WHERE, LIMIT, JOIN e procedimentos.
+    """
+
     def __init__(self):
+        """
+        Atributos:
+            parser (Parser): Instância da classe Parser para analisar comandos de entrada.
+            dictionary (dict): Armazena tabelas por nome, cada uma como um dicionário com as chaves 'header' e 'data'.
+            procedures (dict): Armazena procedimentos definidos pelo utilizador por nome.
+        """
         self.parser = Parser()
         self.dictionary = {}
         self.procedures = {}
 
     def start(self, input_string):
+        """
+        Analisa e executa uma sequência de comandos a partir da string de entrada.
+        """
         parser = self.parser.parse_input(input_string)
         if parser is None:
             raise ValueError("Parser error")
@@ -43,6 +59,9 @@ class Interpreter:
     # --------- Comandos - Tabela de dados ---------
 
     def read_file(self, file_path):
+        """
+        Lê um ficheiro CSV e devolve o seu conteúdo como um dicionário com 'header' e 'data'.
+        """
         data = []
         header = None
         with open(file_path, 'r') as file:
@@ -57,6 +76,9 @@ class Interpreter:
             return {"header": header, "data": data}
 
     def write_file(self, table_name, file_path):
+        """
+        Escreve a tabela especificada num ficheiro CSV.
+        """
         if table_name not in self.dictionary:
             raise ValueError("Table does not exist")
         table = self.dictionary[table_name]
@@ -67,22 +89,34 @@ class Interpreter:
                 writer.writerow(row)
 
     def import_table(self, table_name, file_path):
+        """
+        Importa uma tabela de um ficheiro CSV e armazena-a com o nome dado.
+        """
         if table_name in self.dictionary:
             raise ValueError("Table already exists")
         data = self.read_file(file_path)
         self.dictionary[table_name] = data
 
     def rename_table(self, old_name, new_name):
+        """
+        Altera o nome de uma tabela existente.
+        """
         if old_name not in self.dictionary:
             raise ValueError("Table does not exist")
         self.dictionary[new_name] = self.dictionary.pop(old_name)
 
     def discard_table(self, table_name):
+        """
+        Remove uma tabela do dicionário.
+        """
         if table_name not in self.dictionary:
             raise ValueError("Table does not exist")
         del self.dictionary[table_name]
 
     def print_table(self, table_name):
+        """
+        Imprime o cabeçalho e as linhas da tabela especificada.
+        """
         if table_name not in self.dictionary:
             raise ValueError("Table does not exist")
         table = self.dictionary[table_name]
@@ -93,6 +127,9 @@ class Interpreter:
     # --------- Comandos - Queries ---------
 
     def select_table(self, table_name, columns, conditions=None, limit=None):
+        """
+        Seleciona colunas e linhas de uma tabela, podendo filtrar por condições e limitar o número de linhas.
+        """
         if table_name not in self.dictionary:
             raise ValueError("Table does not exist")
         table = self.dictionary[table_name]
@@ -120,6 +157,9 @@ class Interpreter:
         return {"header": selected_columns, "data": selected_data}
 
     def evaluate_conditions(self, row, header, conditions):
+        """
+        Avalia uma lista de condições numa linha da tabela.
+        """
         for cond in conditions:
             if cond[0] == 'AND':
                 _, col, op, val = cond
@@ -133,6 +173,9 @@ class Interpreter:
         return True
 
     def apply_operator(self, cell, op, val):
+        """
+        Aplica um operador de comparação entre o valor de uma célula e um valor dado.
+        """
         try:
             cell = float(cell)
             val = float(val)
@@ -148,6 +191,9 @@ class Interpreter:
         return False
 
     def execute_select(self, statement):
+        """
+        Executa uma instrução SELECT analisada e devolve o resultado.
+        """
         kind = statement[0]
 
         if kind == 'select_table':
@@ -178,6 +224,9 @@ class Interpreter:
             raise ValueError(f"Unknown select kind: {kind}")
         
     def print_result(self, result):
+        """
+        Imprime o cabeçalho e as linhas de um resultado de consulta.
+        """
         print(result["header"])
         for row in result["data"]:
             print(row)
@@ -185,6 +234,9 @@ class Interpreter:
     # --------- Comandos - Criação ---------
 
     def create_join_table(self, new_table, table1, table2, join_key):
+        """
+        Cria uma nova tabela juntando duas tabelas por uma chave especificada.
+        """
         if table1 not in self.dictionary or table2 not in self.dictionary:
             raise ValueError("One or both tables do not exist")
         t1 = self.dictionary[table1]
@@ -202,12 +254,18 @@ class Interpreter:
         self.dictionary[new_table] = {"header": header, "data": data}
 
     def create_select_columns(self, new_table, columns, source_table):
+        """
+        Cria uma nova tabela selecionando colunas específicas de uma tabela existente.
+        """
         result = self.select_table(source_table, columns)
         self.dictionary[new_table] = result
 
     # --------- Procedimentos ---------
 
     def call_procedure(self, name):
+        """
+        Executa um procedimento guardado pelo nome.
+        """
         if name not in self.procedures:
             raise ValueError("Procedure does not exist")
         statements = self.procedures[name]
@@ -215,5 +273,7 @@ class Interpreter:
             self.start(';'.join([self.statement_to_string(stmt) for stmt in statements]))
 
     def statement_to_string(self, stmt):
-        # Simplified for demo purposes — you can improve this
+        """
+        Converte uma instrução analisada de volta para a sua representação em string.
+        """
         return str(stmt)
