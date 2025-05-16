@@ -18,3 +18,11 @@ CREATE TABLE Temp SELECT Temperatura FROM observacoes LIMIT 2;
 PRINT TABLE Temp;
 
 CREATE TABLE Junto FROM observacoes JOIN estacoes USING Id;
+
+PROCEDURE print_all DO
+PRINT TABLE observacoes;
+PRINT TABLE estacoes;
+PRINT TABLE Temp;
+END;
+
+CALL print_all;

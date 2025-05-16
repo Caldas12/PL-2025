@@ -3,10 +3,10 @@ from lexer import Lexer
 
 class Parser:
     def __init__(self):
-        self.lexer = Lexer()
-        self.tokens = self.lexer.tokens
-        self.lexer.build()
-        self.parser = yacc.yacc(module=self)
+        self.lexer = Lexer()                    # Cria uma instância do lexer
+        self.tokens = self.lexer.tokens         # Usa os tokens definidos no lexer
+        self.lexer.build()                      # Constrói o lexer
+        self.parser = yacc.yacc(module=self)    # Constrói o parser com as regras da própria classe
 
     # ---------------------
     # Regras de Produção
@@ -129,7 +129,7 @@ class Parser:
         if len(p) == 2:
             p[0] = [p[1]]
         else:
-            p[0] = [p[1]] + p[3]
+            p[0] = [p[1]] + p[3]    # Lista separada por vírgulas
 
     # --------- Comandos - Criação ---------
 
@@ -155,7 +155,7 @@ class Parser:
         'call_procedure : CALL ID SEMICOLON'
         p[0] = ('call', p[2])
 
-    # --------- Erros ---------
+    # --------- Tratamento de Erros ---------
 
     def p_error(self, p):
         if p:
@@ -167,7 +167,7 @@ class Parser:
     
     def parse_input(self, data):
         """
-        Função para parsear a entrada e retornar a AST.
+        Função para parsear a entrada e retornar a AST(árvore sintática).
         """
         result = self.parser.parse(data, lexer=self.lexer.lexer)
         return result

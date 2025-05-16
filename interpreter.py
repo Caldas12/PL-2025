@@ -262,18 +262,96 @@ class Interpreter:
 
     # --------- Procedimentos ---------
 
+    def create_procedure(self, name, statements):
+        """
+        Cria um procedimento guardado pelo nome.
+        """
+        if name in self.procedures:
+            raise ValueError("Procedure already exists")
+        self.procedures[name] = statements
+        return f"Procedure {name} created"
+    
     def call_procedure(self, name):
         """
         Executa um procedimento guardado pelo nome.
         """
         if name not in self.procedures:
             raise ValueError("Procedure does not exist")
+        
         statements = self.procedures[name]
         for statement in statements:
-            self.start(';'.join([self.statement_to_string(stmt) for stmt in statements]))
+            print(statement)
+            stmt_type = statement[0]
+
+            if stmt_type == 'print':
+                self.print_table(statement[1])
+            elif stmt_type in ('select_table', 'select_columns', 'select_where', 'select_where_and', 'select_limit', 'select_limit_columns'):
+                result = self.execute_select(statement)
+                self.print_result(result)
+            elif stmt_type == 'import':
+                self.import_table(statement[1], statement[2])
+            elif stmt_type == 'export':
+                self.write_file(statement[1], statement[2])
+            elif stmt_type == 'discard':
+                self.discard_table(statement[1])
+            elif stmt_type == 'rename':
+                self.rename_table(statement[1], statement[2])
+            elif stmt_type == 'create_from_query':
+                result = self.execute_select(statement[2])
+                self.dictionary[statement[1]] = result
+            elif stmt_type == 'create_join':
+                self.create_join_table(*statement[1:])
+            elif stmt_type == 'create_select_columns':
+                self.create_select_columns(*statement[1:])
+            elif stmt_type == 'procedure':
+                self.procedures[statement[1]] = statement[2]
+            elif stmt_type == 'call':
+                self.call_procedure(statement[1])
+            else:
+                raise ValueError(f"Unknown statement type: {stmt_type}")
 
     def statement_to_string(self, stmt):
-        """
-        Converte uma instrução analisada de volta para a sua representação em string.
-        """
-        return str(stmt)
+        kind = stmt[0]
+        
+        if kind == 'print':
+            return f"PRINT TABLE {stmt[1]}"
+        
+        elif kind == 'import':
+            return f"IMPORT TABLE {stmt[1]} FROM '{stmt[2]}'"
+        
+        elif kind == 'export':
+            return f"EXPORT TABLE {stmt[1]} AS '{stmt[2]}'"
+        
+        elif kind == 'discard':
+            return f"DISCARD TABLE {stmt[1]}"
+        
+        elif kind == 'rename':
+            return f"RENAME TABLE {stmt[1]} TO {stmt[2]}"
+        
+        elif kind == 'select_table':
+            return f"SELECT * FROM {stmt[2]}"
+        
+        elif kind == 'select_columns':
+            cols = ', '.join(stmt[1])
+            return f"SELECT {cols} FROM {stmt[2]}"
+        
+        elif kind == 'select_where':
+            cond = self.condition_to_string(stmt[2])
+            return f"SELECT * FROM {stmt[1]} WHERE {cond}"
+        
+        elif kind == 'select_where_and':
+            cond = ' AND '.join(self.condition_to_string(c) for c in stmt[2])
+            return f"SELECT * FROM {stmt[1]} WHERE {cond}"
+        
+        elif kind == 'select_limit':
+            return f"SELECT * FROM {stmt[1]} LIMIT {stmt[2]}"
+        
+        elif kind == 'select_limit_columns':
+            cols = ', '.join(stmt[1])
+            return f"SELECT {cols} FROM {stmt[2]} LIMIT {stmt[3]}"
+        
+        elif kind == 'call':
+            return f"CALL {stmt[1]}"
+        
+        else:
+            raise NotImplementedError(f"statement_to_string not implemented for '{kind}'")
